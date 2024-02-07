@@ -58,7 +58,7 @@ if (!empty($_SESSION['active'])) {
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>NAXSAN</title>
+  <title>PONCELET</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
   <link rel="stylesheet" href="css/style.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -68,7 +68,7 @@ if (!empty($_SESSION['active'])) {
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 </head>
 
-<body class="" style="background-color: #2e2e2e ;color: white;">
+<body class="" style="background-color: #0c0c0c ;color: white;">
   <section class="container-fluid">
     <div class="row g-0">
       <div class="col-lg-8 d-none d-lg-block">
@@ -83,7 +83,7 @@ if (!empty($_SESSION['active'])) {
             <div  class="carousel-item img-1 min-vh-100 active ">
 
               <div class="carousel-caption d-none d-md-block">
-                <h5>NAXSAN</h5>
+                <h5>PONCELET</h5>
                 <p>@irsoft 2023</p>
               </div>
             </div>
@@ -91,7 +91,7 @@ if (!empty($_SESSION['active'])) {
             <div class="carousel-item img-2 min-vh-100">
 
               <div  class="carousel-caption d-none d-md-block">
-              <h5>NAXSAN</h5>
+              <h5>PONCELET</h5>
                 <p>@irsoft 2023</p>
               </div>
             </div>
@@ -121,17 +121,17 @@ if (!empty($_SESSION['active'])) {
           <form action="" method="post">
 
           <h2 style="font-size:18px;text-align: center;">SISTEMA WEB DE GESTIÓN, CONTROL E INFORMACIÓN </h2> 
-          <h2 style="font-size:15px;text-align: center; color:#ff7f7f">CONSTRUCTORA COMERCIALIZADORA NAXSAN </h2>
+          <h2 style="font-size:15px;text-align: center; color:#ffa874">CONSTRUCTORA COMERCIALIZADORA PONCELET </h2>
 
           <hr>
 
             <div class="mb-4">
               <label for="disabledTextInput" class="form-label font-weight-bold"><i class="bi bi-person"></i> Usuario</label>
-              <input type="text" name="usuario" id="disabledTextInput" class="form-control border-0" placeholder="Colocar Usuario" style="color: #ff8a8a !important;background-color: #232323;font-weight: 600;">
+              <input type="text" name="usuario" id="disabledTextInput" class="form-control border-0" placeholder="Colocar Usuario" style="color: #f59046 !important;background-color: #232323;font-weight: 600;">
             </div>
             <div class="mb-4">
               <label for="disabledTextInput" class="form-label font-weight-bold"><i class="bi bi-lock"></i> Contraseña</label>
-              <input type="password" name="clave" id="disabledTextInput" class="form-control  border-0" placeholder="Colocar Contraseña" style="color: #ff8a8a !important;background-color: #232323;font-weight: 600;">
+              <input type="password" name="clave" id="disabledTextInput" class="form-control  border-0" placeholder="Colocar Contraseña" style="color: #f59046 !important;background-color: #232323;font-weight: 600;">
             </div>
             <div style="background-color: #fff400;color: #4f4f4f;padding: 0;font-weight: 600;border: 2px solid #ffb100;" class="alert form-text text-center"><?php echo isset($alert) ? $alert : ''; ?></div>
             <button type="submit" class="btn btn-primary w-100 border-0">Iniciar Sesión <i class="bi bi-chevron-right"></i></button>
