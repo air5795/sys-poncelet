@@ -23,7 +23,7 @@ if (empty($_SESSION['active'])) {
                      
                      
                     <p class="form-text "  style="color: white;padding: 5px;"><i class="bi bi-person"></i> Usuario : </p> 
-                    <p class="form-text "  style="color: #d15959;padding: 5px;background-color: black;border-radius: 8px;">
+                    <p class="form-text "  style="color: #ffae87;padding: 5px;background-color: #4f4f4f;border-radius: 8px;">
                         <?php 
                             if ($_SESSION['rol'] == 1) {
                                 $tipo = 'Administrador';
@@ -93,11 +93,11 @@ if (empty($_SESSION['active'])) {
         <div id="layoutSidenav">
             <div id="layoutSidenav_nav">
                 <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
-                    <div class="sb-sidenav-menu">
+                    <div class="sb-sidenav-menu" style="background-color:#424242">
                         <div class="nav">
                             
                             
-                            <a class="nav-link" href="../index.php" style="background-color: #ff5050;color: white;font-weight: 300;">
+                            <a class="nav-link" href="../index.php" style="background-color: #2f2f2f;color: white;font-weight: 300;">
                                 <div class="sb-nav-link-icon"><i style="color:#FFffff" class="fa-solid fa-house"></i></div>
                                 Inicio
                             </a>
@@ -112,7 +112,7 @@ if (empty($_SESSION['active'])) {
 
                             
 
-                            <div class="sb-sidenav-menu-heading " style="color: #ff5050; font-size: medium; text-transform: none; background-color: #38383869;"><i class="fa-solid fa-object-ungroup"></i> General</div>
+                            <div class="sb-sidenav-menu-heading " style="color: #ff7a58; font-size: medium; text-transform: none; background-color: #38383869;"><i class="fa-solid fa-object-ungroup"></i> General</div>
 
                             
 
@@ -186,7 +186,7 @@ if (empty($_SESSION['active'])) {
                         if ($_SESSION['rol'] == 1 or $_SESSION['iduser'] == 29 ) {
                         ?>
 
-<div class="sb-sidenav-menu-heading " style="color:#ff5050; font-size: medium;  text-transform: none; background-color: #38383869;" >
+<div class="sb-sidenav-menu-heading " style="color:#ff7a58; font-size: medium;  text-transform: none; background-color: #38383869;" >
                             <i class="fa-solid fa-cart-shopping"></i> Comercializadora</div>
                                         <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#cajachica2" aria-expanded="false" aria-controls="collapsePages">
                                             <div class="sb-nav-link-icon"><i class="fa-solid fa-sack-dollar"></i></div>
@@ -512,7 +512,7 @@ if (empty($_SESSION['active'])) {
                         ?>
 
 
-                                <div class="sb-sidenav-menu-heading" style="color: #ff5050; font-size: medium; text-transform: none; background-color: #38383869;"><i class="fa-solid fa-wrench"></i> Constructora</div>
+                                <div class="sb-sidenav-menu-heading" style="color: #ff7a58; font-size: medium; text-transform: none; background-color: #38383869;"><i class="fa-solid fa-wrench"></i> Constructora</div>
 
                             <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseexp2" aria-expanded="false" aria-controls="collapsePages">
                                 <div class="sb-nav-link-icon"><i class="fa-solid fa-briefcase"></i></div>

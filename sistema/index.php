@@ -33,7 +33,7 @@
         <meta name="author" content="" />
         <link rel="shortcut icon" href="img/ICONO.png">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-        <title>NAXSAN</title>
+        <title>PONCELET</title>
         
     </head>
     <body class="sb-nav-fixed">
@@ -44,8 +44,8 @@
         <div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid px-4 p-2">
-                        <div class="alert alert-warning alert-dismissible fade show " role="alert" style="background-color: #ebebeb;border:none;"> 
-                             <?php echo $_SESSION['nombre']  ?>  <strong> Bienvenido al Sistema ! <br></strong> En este sistema encontraras una serie de herramientas para la automatizacion del manejo de la informacion en NAXSAN.
+                        <div class="alert alert-warning alert-dismissible fade show " role="alert" style="background-color: #ffffb2;border:none;"> 
+                             <?php echo $_SESSION['nombre']  ?>  <strong> Bienvenido al Sistema ! <br></strong> En este sistema encontraras una serie de herramientas para la automatizacion del manejo de la informacion en PONCELET.
                             <button type="button" class=" btn-close " data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
 
@@ -75,7 +75,7 @@
                                         <div class="number"><?php echo $total2 ?></div>
                                         <div class="indicator">
                                             <i class="kk"></i>
-                                            <span class="text">Comercializadora/NAXSAN</span>
+                                            <span class="text">Comercializadora/PONCELET</span>
                                         </div>
                                     </div>
 
@@ -88,7 +88,7 @@
                                         <div class="number"><?php echo ''.number_format($total,2,'.',','). ' Bs' ?></div>
                                         <div class="indicator">
                                             <i class="kk"></i>
-                                            <span class="text">Comercializadora/NAXSAN</span>
+                                            <span class="text">Comercializadora/PONCELET</span>
                                         </div>
                                     </div>
 
@@ -102,7 +102,7 @@
                                         <div class="number"><?php echo $total4 ?></div>
                                         <div class="indicator">
                                             <i class="k"></i>
-                                            <span class="text">Constructora/NAXSAN</span>
+                                            <span class="text">Constructora/PONCELET</span>
                                         </div>
                                     </div>
 
@@ -116,7 +116,7 @@
                                         <div class="number"><?php echo ''.number_format($total3,2,'.',','). ' Bs' ?></div>
                                         <div class="indicator">
                                             <i class="k"></i>
-                                            <span class="text">Constructora/NAXSAN</span>
+                                            <span class="text">Constructora/PONCELET</span>
                                         </div>
                                     </div>
 

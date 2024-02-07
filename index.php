@@ -68,7 +68,7 @@ if (!empty($_SESSION['active'])) {
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 </head>
 
-<body class="" style="background-color: #0c0c0c ;color: white;">
+<body class="" style="background-color: #292828 ;color: white;">
   <section class="container-fluid">
     <div class="row g-0">
       <div class="col-lg-8 d-none d-lg-block">
