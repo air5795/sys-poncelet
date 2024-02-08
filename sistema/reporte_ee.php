@@ -21,7 +21,7 @@ ob_start();
 
 
 
-    <title>NAXSAN</title>
+    <title>PONCELET</title>
 
 </head>
 
@@ -33,7 +33,7 @@ ob_start();
                         <td colspan="10" class="comer">EXPERIENCIA ESPECIFICA</td>
                     </tr>
                     <tr>
-                        <td colspan="10" class="comer2">Empresa Comercializadora NAXSAN</td>
+                        <td colspan="10" class="comer2">Empresa Comercializadora PONCELET</td>
                     </tr>
                     <tr class="comer3">
                         <th>N°</th>

@@ -19,7 +19,7 @@ include "../conexion.php";
     <meta name="author" content="" />
     <link rel="shortcut icon" href="../img/ICONO.png">
 
-    <title>NAXSAN</title>
+    <title>PONCELET</title>
 
     <script src="js/jquery-3.6.1.js"></script>
     <link rel="stylesheet" href="css/jquery.dataTables.min.css">
@@ -41,7 +41,7 @@ include "../conexion.php";
                     <h1 class="mt-4"><i class="fa-solid fa-cart-shopping"></i> Listar proyectos Especificos Comercialiadora</h1>
                         
                         <ol class="breadcrumb mb-2 ">
-                            <li class="breadcrumb-item active">Naxsan/ Proyectos Comercializadora</li> 
+                            <li class="breadcrumb-item active">PONCELET/ Proyectos Comercializadora</li> 
                         </ol>
 
                 <hr>

@@ -24,7 +24,7 @@
         <link rel="shortcut icon" href="../img/ICONO.png">
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>NAXSAN</title>
+        <title>PONCELET</title>
         
     </head>
     <body class="sb-nav-fixed">
