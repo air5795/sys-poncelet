@@ -15,7 +15,7 @@
         <meta name="author" content="" />
         <link rel="shortcut icon" href="../img/ICONO.png">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-        <title>NAXSAN</title>    
+        <title>PONCELET</title>    
     </head>
 
     <body class="sb-nav-fixed">
@@ -26,8 +26,8 @@
         
         <div id="layoutSidenav_content">
             <div class="container px-4 ">
-            <h1 class="mt-4 col text-md-left d-none d-sm-block"><i class="fa-solid fa-folder-open"></i> Documentos y Recursos Empresa NAXSAN</h1>
-            <h1 class="mt-4 col text-center d-sm-none"><i class="fa-solid fa-folder-open"></i> Documentos NAXSAN</h1>
+            <h1 class="mt-4 col text-md-left d-none d-sm-block"><i class="fa-solid fa-folder-open"></i> Documentos y Recursos Empresa PONCELET</h1>
+            <h1 class="mt-4 col text-center d-sm-none"><i class="fa-solid fa-folder-open"></i> Documentos PONCELET</h1>
 
    
                 <hr>
