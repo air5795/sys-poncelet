@@ -39,7 +39,7 @@
                             <h3 style="color: #ff5301;text-align:left ;">Cargar Documentos</h3> 
                             <div style="width:100%">
                                 <form style="text-align: center;" method="POST" action="documentos_CargarFicheros.php" enctype="multipart/form-data">
-                                <div style="text-align:center; width:100%" class="form-group btn btn-danger w-100">
+                                <div style="text-align:center; width:100% ;background-color: #ff7b56;border: none;" class="form-group btn btn-danger w-100">
                                 <label style="color: white;" class="btn w-100" for="my-file-selector">Carga tu Archivo aqui<br><br>
                                 <input required="" type="file" name="file" id="exampleInputFile"> 
                                 </label>

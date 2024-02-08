@@ -120,14 +120,14 @@ ob_start();
   
     
             <tr >
-            <th  colspan="3" style="background-color: #ff5050; text-align:left;font-size:15px;" > <span style="color:white">DATOS DE LA EMPRESA</span></th>
+            <th  colspan="3" style="background-color: #ff7a58; text-align:left;font-size:15px;" > <span style="color:white">DATOS DE LA EMPRESA</span></th>
             </tr>
             
 
             <tr class="fon" style="font-size: 11px;">
-                <td> <strong> REPRESENTANTE LEGAL : </strong> ARISPE PONCE DENIS DANIEL </td>
+                <td> <strong> REPRESENTANTE LEGAL : </strong> ARISPE PONCE ALBERTO </td>
                 <td> <strong> CIUDAD : </strong> POTOSÍ</td>
-                <td> <strong> NIT : </strong> 5505982013</td>
+                <td> <strong> NIT : </strong> 6601358013</td>
             
             </tr>
 
@@ -137,7 +137,7 @@ ob_start();
             </tr>
             <tr class="fon" style="font-size: 11px;">
             <td> <strong> TELEFONO : </strong> 72867168 - 70022060 </td>
-            <td colspan="2"> <strong> EMAIL : </strong> comercializadora.naxsan@gmail.com</td>
+            <td colspan="2"> <strong> EMAIL : </strong> poncelet.bo@gmail.com</td>
             </tr>
     
   </table>
@@ -158,7 +158,7 @@ ob_start();
                         </table>
   <table width="100%" border="1">
     <tr>
-      <td style="opacity:0.5;border:#ff5050;background-color:#ff5050; text-align: right; padding:7px;">
+      <td style="opacity:0.5;border:#ff7a58;background-color:#ff7a58; text-align: right; padding:7px;">
       <?php echo '<strong>Recibo: </strong> REC-00000'.$idRecibo ; ?></td>
     </tr>
   </table>

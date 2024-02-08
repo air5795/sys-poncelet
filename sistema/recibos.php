@@ -81,7 +81,7 @@ if (!empty($_POST)) {
     <meta name="description" content="" />
     <meta name="author" content="" />
     <link rel="shortcut icon" href="../img/ICONO.png">
-    <title>NAXSAN</title>
+    <title>PONCELET</title>
     
 
 </head>
@@ -98,7 +98,7 @@ if (!empty($_POST)) {
                 <div class="container-fluid px-4 ">
 
                 
-                    <h1 class="mt-4 col"><i class="fa-solid fa-receipt"></i></i> <strong>Generar </strong>Recibos NA<span style="color:#e10101;">XS</span>AN </h1>
+                    <h1 class="mt-4 col"><i class="fa-solid fa-receipt"></i></i> <strong>Generar </strong>Recibos PONCELET </h1>
 
 
                     <hr>
