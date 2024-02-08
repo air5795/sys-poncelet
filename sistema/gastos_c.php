@@ -115,7 +115,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>SIS-NAXSAN</title>
+        <title>SIS-PONCELET</title>
         
     </head>
     <body class="sb-nav-fixed">
@@ -129,7 +129,7 @@
                     <div class="container-fluid px-4">
                     <div class="container-fluid px-4 ">
                 
-                <h1 class="mt-4 col"><i class="fa-solid fa-cash-register"></i>  <strong>Registro  <span> CAJA CHICA NA<SPAN style="color:red">XS</SPAN>AN </strong><span style="color:#ff6363;"> Gastos  <i class="fa-solid fa-square-caret-down"></i></span></h1>
+                <h1 class="mt-4 col"><i class="fa-solid fa-cash-register"></i>  <strong>Registro  <span> CAJA CHICA PONCELET </strong><span style="color:#ff6363;"> Gastos  <i class="fa-solid fa-square-caret-down"></i></span></h1>
               
                         <hr>
 

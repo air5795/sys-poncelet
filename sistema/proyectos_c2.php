@@ -65,7 +65,7 @@
         <meta name="author" content="" />
         <link rel="shortcut icon" href="../img/ICONO.png">
  
-        <title>NAXSAN</title>
+        <title>PONCELET</title>
         
     </head>
     <body class="sb-nav-fixed">
@@ -79,7 +79,7 @@
                     <div class="container-fluid px-4">
                     <div class="container-fluid px-4 ">
                 
-                <h1 class="mt-4 col"><i class="fa-solid fa-sack-dollar"></i> <strong>Gestor de <span> CAJA CHICA NA<SPAN style="color:red">XS</SPAN>AN SUCURSAL (LA PAZ) </strong>   </span></h1>
+                <h1 class="mt-4 col"><i class="fa-solid fa-sack-dollar"></i> <strong>Gestor de <span> CAJA CHICA PONCELET SUCURSAL (LA PAZ) </strong>   </span></h1>
                   
                         
                         <hr>
