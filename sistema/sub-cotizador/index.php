@@ -46,7 +46,7 @@ if (isset($_SESSION['last_activity']) && (time() - $_SESSION['last_activity'] > 
         <link href="css/style.css" rel="stylesheet">
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>NAXSAN</title>
+        <title>PONCELET</title>
         
     </head>
     <body class="sb-nav-fixed">
