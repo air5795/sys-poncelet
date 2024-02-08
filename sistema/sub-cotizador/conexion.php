@@ -15,7 +15,7 @@ if ($entorno == 'local') {
     $db_host = 'localhost';
     $db_user = 'airsoftb_naxsan';
     $db_password = '71811452Ale*';
-    $db_name = 'airsoftb_naxsan2';
+    $db_name = 'airsoftb_poncelet';
 }
 
 $conexion = @mysqli_connect($db_host,$db_user,$db_password,$db_name);

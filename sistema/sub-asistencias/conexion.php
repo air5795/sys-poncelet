@@ -12,7 +12,7 @@ if ($_SERVER['SERVER_NAME'] == 'localhost') {
     $usuario = "airsoftb_naxsan";
     $password = "71811452Ale*";
     $host = "localhost";
-    $dbname = "airsoftb_naxsan2";
+    $dbname = 'airsoftb_poncelet';
 }
 
 try {
