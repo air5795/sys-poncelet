@@ -31,7 +31,7 @@
         <link rel="shortcut icon" href="../img/ICONO.png">
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>NAXSAN</title>
+        <title>PONCELET</title>
 
         <style>
             table.dataTable.dtr-inline.collapsed>tbody>tr>td.dtr-control:before,
@@ -72,7 +72,7 @@
 <div class="container-fluid  fondo ">    
         <div class="row">
             <div class="col-sm-4">
-                <h2><i class="bi bi-file-lock"></i> Credenciales Naxsan </h2>
+                <h2><i class="bi bi-file-lock"></i> Credenciales PONCELET </h2>
                 
             </div>
 
@@ -92,7 +92,7 @@
                 
                 <div class="text-center">
                     <!-- Button trigger modal -->
-                        <button type="button" class="btn btn-danger  w-100" data-bs-toggle="modal" data-bs-target="#modalproductos" id="botonCrear">
+                        <button type="button" class="btn btn-primary  w-100" data-bs-toggle="modal" data-bs-target="#modalproductos" id="botonCrear">
                         <i class="bi bi-key"></i> Nueva Clave
                         </button>
                         
