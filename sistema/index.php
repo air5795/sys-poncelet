@@ -142,11 +142,11 @@
                             
                                 
                                 <div class="card mb-4">
-                                    <div class="card-header alert alert-warning" style="background-color: #ebebeb;border:none;">     
-                                        <strong class="alert alert-warning  " style="background-color: #ebebeb;border:none;"> <i class="fas fa-chart-area me-1"></i> Proyectos Pendientes de Pago Comercializadora :  <?PHP echo $r; ?> </strong>
+                                    <div class="card-header alert alert-warning" style="background-color: #424242;border:none;">     
+                                        <strong class="alert alert-warning  " style="background-color: #424242;border:none;color:white"> <i class="fas fa-chart-area me-1"></i> Proyectos Pendientes de Pago Comercializadora :  <?PHP echo $r; ?> </strong>
                                     </div>
                                     <div class="card-body"><canvas id="myChart" width="150%" height="20%"></canvas></div>
-                                    <div class="card-footer small text-muted">Actualizacion <?php echo date('d/m/y');?></div>
+                                    <div style="background-color: #424242; color: white !important;" class="card-footer small text-muted">Actualizacion <?php echo date('d/m/y');?></div>
                                 </div>
                                 
                                 

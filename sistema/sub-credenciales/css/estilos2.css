@@ -111,3 +111,7 @@ main.darkmode .swal2-popup swal2-modal swal2-icon-warning swal2-show{
   background: #242424 !important;
   color: white !important;
 }
+
+body.darkmode .tipo{
+  color: black;
+}
