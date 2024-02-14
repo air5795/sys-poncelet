@@ -40,7 +40,7 @@ if (isset($_SESSION['last_activity']) && (time() - $_SESSION['last_activity'] > 
 
         <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.min.css" rel="stylesheet">
 
-        <link rel="shortcut icon" href="img/ICONO2.png">
+        <link rel="shortcut icon" href="img/ICONOGRANDE2.png">
 
         <script src="js/invoice.js"></script>
         <link href="css/style.css" rel="stylesheet">

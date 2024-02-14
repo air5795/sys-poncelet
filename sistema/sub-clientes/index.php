@@ -17,17 +17,41 @@
         <link rel="stylesheet" href="css/estilos2.css">
         <link rel="stylesheet" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css">
         
+        
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
 
         <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.min.css" rel="stylesheet">
 
-        <link rel="shortcut icon" href="img/ICONOGRANDE2.png">
+        <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.bootstrap5.min.css">
+        
+        
+
+        
+
+        <link rel="shortcut icon" href="../img/ICONO.png">
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>SIS-PONCELET</title>
+        <title>PONCELET</title>
+
+        <style>
+            table.dataTable.dtr-inline.collapsed>tbody>tr>td.dtr-control:before,
+            table.dataTable.dtr-inline.collapsed>tbody>tr>th.dtr-control:before {
+                margin-right: .5em;
+                display: inline-block;
+                color: rgb(247 67 67);
+                
+                font-family: "cursiva"; /* Asegúrate de que la fuente Font Awesome esté cargada */
+            }
+        </style>
+
+
+
         
     </head>
     <body class="sb-nav-fixed">
+
+
+
     <?php include "../menu.php"?>
     
 
@@ -47,63 +71,29 @@
 
 <div class="container-fluid  fondo ">    
         <div class="row">
-            <div class="col-sm-6">
-                <h2><i class="bi bi-person-circle"></i> Crear Cliente Nuevo  </h2>
+            <div class="col-sm-4">
+                <h2><i class="bi bi-people"></i> Clientes PONCELET </h2>
                 
             </div>
 
-            <?php
-
-                $result=mysqli_query($conexion,"SELECT count(*) as total from cliente");
-                $data=mysqli_fetch_assoc($result);
-                $dato = $data['total'];
-
-            ?>
-
-            <div class="col-sm-2">
+            <div class="col-sm-6 ">
                 
+                
+            </div>
+
             
-                
-            </div>
-            <div class="col-sm-2">
-                <a class="btn btn-success w-100 disabled " href="#" data-bs-toggle="modal" data-bs-target="#exampleModal" > <strong><i class="bi bi-person-circle"></i>   </strong> Total Clientes <?php echo $dato?> </a>
+
             
-                
-            </div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!-- 
-            <div class="col-sm-2">
-                <a class="btn btn-danger w-100" style="background-color: cadetblue;border:none;" href="http://localhost/poncelet-sis/sistema/cotizador/"><i class="bi bi-file-earmark-ruled"></i> Cotizador Poncelet </a>
-                
-            </div> -->
-
+            
             
 
             <div class="col-sm-2 ">
                 
                 <div class="text-center">
                     <!-- Button trigger modal -->
-                        <button type="button" class="btn btn-outline-secondary boton w-100" data-bs-toggle="modal" data-bs-target="#modalsalidas" id="botonCrear">
-                        <i class="bi bi-plus-circle-fill"></i> Registrar Cliente
+                        <button type="button" class="btn btn-primary  w-100" data-bs-toggle="modal" data-bs-target="#modalproductos" id="botonCrear">
+                        <i class="bi bi-key"></i> Nuevo CLiente
                         </button>
                         
                 </div>
@@ -111,29 +101,29 @@
             
             
         </div>
-
-        
         
         <hr style="background-color: red;">
 
         <div class="table-responsive" style="font-size: 11px; width:100%">
-            <table id="datos_usuario" class="table table-hover table-striped table-bordered" style="width:100%; text-align:center;" >
+            <table id="datos_usuario" class="responsive display nowrap table table-hover " style="width:100%;font-size:13px;" >
                 <thead>
                     <tr>
-                        <th>ID CLIENTE</th>
-                        <th width="30%">NOMBRE</th>
-                        <th>NIT</th>
-                        <th>TELEFONO </th>
-                        <th>DIRECCION</th>
-                        <th>AGREGADO EN FECHA</th>
-                        <th>ESTADO</th>
-                        <th></th>
-                        <th></th>
-
-                    
+                        <th>ID</th>
+                        <th>NOMBRE</th>
                         
+                        <th>NIT O CI</th>
+                        <th>TELEFONO</th>
+                        <th>DIRECCION</th>
+                        <th>ESTADO</th>
+                        <th>FOTO</th>
+                        
+                        <th width = "10px"></th>
+                        <th width = "10px"></th>
                     </tr>
                 </thead>
+                <tbody>
+                               
+                            </tbody>
             </table>
         </div>
     </div>
@@ -141,11 +131,11 @@
 <!-- FINAL tabla--> 
 
 <!-- Modal NUEVO -->
-<div class="modal fade" id="modalsalidas" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="modalproductos" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel"><i class="fa-solid fa-box"></i> Registro de clientes</h1>
+                <h1 class="modal-title fs-5" id="exampleModalLabel"><i class="fa-solid fa-box"></i> Registro de Clientes</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="background-color: azure;"></button>
             </div>
             
@@ -159,40 +149,37 @@
 
                  
                     <div class="row">
-                  
 
                         <div class="col-sm-12">
-                            <span for="inputFirstName">Nombre de cliente</span>
-                            <input class="form-control form-control-sm  bg-opacity-10" name="nombre" id="nombre" type="text" value="" required />
+                            <label for="nombre" style="font-family: sans-serif;">Ingrese el Nombre del Cliente <span style="color:red"> *</span></label>
+                            <input type="text" name="nombre" id="nombre" class="form-control form-control-sm">
                         </div>
-                        
-                        <div class="col-sm-12">
-                            <span for="inputFirstName">NIT </span>
-                            <input class="form-control form-control-sm  bg-opacity-10" name="nit" id="nit" type="text" value="" required />
-                        </div> 
 
-                        <div class="col-sm-12">
-                            <span for="inputFirstName">Telefono </span>
-                            <input class="form-control form-control-sm  bg-opacity-10" name="telefono" id="telefono" type="text" value="" required />
-                        </div> 
+                        <div class="col-sm-6">
+                            <label for="nit" style="font-family: sans-serif;">Ingrese el NIT o CI del cliente <span style="color:red"> *</span></label>
+                            <input type="text" name="nit" id="nit" class="form-control form-control-sm">
+                        </div>
 
-                        <div class="col-sm-12">
-                            <span for="inputFirstName">Dirección</span>
-                            <input class="form-control form-control-sm  bg-opacity-10" name="direccion" id="direccion" type="text" value="" required />
-                        </div> 
 
-                        
-
-                        <br>
-
-                        
-
-                        
-
+                        <div class="col-sm-6">
+                            <label for="telefono" style="font-family: sans-serif;">Ingrese Telefono</label>
+                            <input type="text" name="telefono" id="telefono" class="form-control form-control-sm">
+                        </div>
+                        <div class="col-sm-6">
+                            <label for="direccion" style="font-family: sans-serif;">Ingrese Direccion </label>
+                            <input type="text" name="direccion" id="direccion" class="form-control form-control-sm">
+                        </div>  
                        
 
-                        
 
+                        <div class="col-sm-6">
+                            <label for="foto" style="font-family: sans-serif;">Ingrese Foto del Cliente</label>
+                            <input type="file" class="form-control form-control-sm" name="foto" id="foto">
+                        </div>
+                        <div class="col-sm-6">
+                            <span id="imagen-subida"></span>
+                        </div>
+                       
                         
                         
                         
@@ -207,7 +194,7 @@
 
                     </div>
                     <div class="modal-footer">
-                        <input type="hidden" name="id_cliente" id="id_cliente">
+                        <input type="hidden" name="idcliente" id="idcliente">
                         <input type="hidden" name="operacion" id="operacion">
 
                         <input type="reset" value="Limpiar" class="btn btn-secondary"> 
@@ -226,6 +213,22 @@
 
 
         </div>
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+<!-- modal editar categoria -->
+
+
 
 
 
@@ -270,10 +273,16 @@
         
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.all.min.js"></script>
 
+        <script src="https://cdn.datatables.net/responsive/2.5.0/js/responsive.bootstrap5.min.js" type="text/javascript"></script>
+        <script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js" type="text/javascript"></script>
+        
+        
+
+
+
+
 
         <script>
-
-       
 
             window.addEventListener('DOMContentLoaded', event => {
             // Toggle the side navigation
@@ -296,48 +305,55 @@
 <script type="text/javascript">
         $(document).ready(function(){
 
+           
+
                 
                 $("#botonCrear").click(function(){
                 $("#formulario")[0].reset();
-                $(".modal-title").text("Registrar Cliente");
-                $("#action").val("Registrar Cliente");
+                $(".modal-title").text("Crear Cliente");
+                $("#action").val("Crear Cliente");
                 $("#operacion").val("Crear");
+                $('#imagen-subida').html("");
+                /* $('#pdf-subido').html("");
+                $('#certificado-subido').html(""); */
+                $("#foto").html("");
+                /* $("#ficha").html("");
+                $("#certificado").html(""); */
+                // Llamada a la función al cargar la página para inicializar las opciones del select
+               
+
+                
             });
             
-            var dataTable = $('#datos_usuario').DataTable({
-                "pageLength": 15,
+            var dataTableactivo = $('#datos_usuario').DataTable({
+                "responsive": true,
+                "dom": 'Bfrtip',
+                "buttons": [
+                    {
+                        extend: 'colvis',
+                        className: 'btn-default',
+                        text: '<i class="fas fa-plus-circle"></i> Mostrar columnas', // Utilizamos FontAwesome para el icono
+                        columnText: function ( dt, idx, title ) {
+                            return (idx+1)+': '+title;
+                        }
+                    }
+                ],
+                "pageLength": 20,
                 "processing":true,
                 "serverSide":true,
-                "ordering": false,
                 "order":[],
                 "ajax":{
                     url: "obtener_registros.php",
                     type: "POST"
                 },
-                //CONDICIONAL DE COLORES EN TABLA 
-                /*"createdRow": function(row,data,index){
-                        if (data[7] == 'proceso') {
-                            $('td', row).eq(7).css({
-                                'background-color':'#f3f39b',
-                                'color':'black',
-                                'text-align':'center',
-                            });
-                        }else{
-                            $('td', row).eq(7).css({
-                                'color':'black',
-                                'background-color':'#84f585',
-                                'text-align':'center',
-                    
-
-                            });
-                        }
-                    },*/
-                "columnsDefs":[
+                "columnsdef":[
                     {
                     "targets":[0, 3, 4],
                     "orderable":false,
                     },
+                    
                 ],
+                
                 "language": {
                 "decimal": "",
                 "emptyTable": "No hay registros",
@@ -360,7 +376,14 @@
             }
             });
 
-    
+            
+
+            
+
+                
+
+
+            
             
             //Aquí código inserción
             $(document).on('submit', '#formulario', function(event){
@@ -369,7 +392,20 @@
             var nit = $('#nit').val();
             var telefono = $('#telefono').val();
             var direccion = $('#direccion').val();
-        
+            var extension = $('#foto').val().split('.').pop().toLowerCase();
+            /* var extension2 = $('#ficha').val().split('.').pop().toLowerCase();
+            var extension3 = $('#certificado').val().split('.').pop().toLowerCase(); */
+            if(extension != '')
+            {
+                if(jQuery.inArray(extension, ['gif','png','jpg','jpeg']) == -1)
+                {
+                    alert("Fomato de imagen inválido");
+                    $('#foto').val('');
+                    return false;
+                }
+            }
+
+           
             	
 		    if(nombre != '')
                 {
@@ -387,15 +423,16 @@
                             'success'
                             ),
                             $('#formulario')[0].reset();
-                            $('#modalsalidas').modal('hide');
-                            dataTable.ajax.reload();
+                            $('#modalproductos').modal('hide');
+                            dataTableactivo.ajax.reload();
+                           
                         }
                     });
                 }
                 else
                 {
                     Swal.fire(
-                    'Tiene que colocar algun nombre para el cliente y se recomienda colocar NIT !',
+                    'Algunos Campos son Obligatorios ?',
                     'Revisa el formulario',
                     'warning'
                     );
@@ -405,28 +442,34 @@
 
             //Funcionalidad de editar
             $(document).on('click', '.editar', function(){		
-            var id_salida = $(this).attr("id");		
+            var idcliente = $(this).attr("id");		
             $.ajax({
                 url:"obtener_registro.php",
                 method:"POST",
-                data:{id_salida:id_salida},
+                data:{idcliente:idcliente},
                 dataType:"json",
                 success:function(data)
                     {
                         
                         //console.log(data);				
-                        $('#modalsalidas').modal('show');
-                        $('#personal').val(data.personal);
-                       
-                        $('#lugar').val(data.lugar);
-                        $('#motivo').val(data.motivo);
+                        $('#modalproductos').modal('show');
+                        $('#nombre').val(data.nombre);
+                        $('#nit').val(data.nit); 
+                        $('#telefono').val(data.telefono);
+                        $('#direccion').val(data.direccion);
+     
+        
+                        $('.modal-title').text("Editar Cliente");
+                        $('#idcliente').val(idcliente);
+                        $('#imagen-subida').html(data.foto);
                         
-                        
-                        $('.modal-title').text("Editar Salida");
-                        $('#id_salida').val(id_salida);
-                    
+                      
                         $('#action').val("Editar");
                         $('#operacion').val("Editar");
+
+                        $('#modalproductos').on('hidden.bs.modal', function () {
+                            dataTableactivo.ajax.reload();
+                        });
                     },
                     error: function(jqXHR, textStatus, errorThrown) {
                     console.log(textStatus, errorThrown);
@@ -436,11 +479,11 @@
 
             //Funcionalidad de borrar
             $(document).on('click', '.borrar', function(){
-                var id_salida = $(this).attr("id");
+                var idcliente = $(this).attr("id");
 
                 Swal.fire({
                 title: 'Esta Seguro de Borrar ?',
-                text: "El Registro con el ID = " + id_salida,
+                text: "El Registro con el ID = " + idcliente,
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#72db88',
@@ -452,16 +495,16 @@
                     $.ajax({
                         url:"borrar.php",
                         method:"POST",
-                        data:{id_salida:id_salida},
+                        data:{idcliente:idcliente},
                         success:function(data)
                         {
-                            dataTable.ajax.reload();
+                            dataTableactivo.ajax.reload();
                         }
                     });
 
                     Swal.fire(
                     'Borrado con Exito!',
-                    'Se Elimino de la Base de datos el Producto ',
+                    'Se Elimino de la Base de datos el Activo Fijo ',
                     'success'
                     )
                 }
@@ -474,6 +517,38 @@
 
         });         
     </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 <script>
@@ -505,9 +580,6 @@
     </script>
 
     <script>
-
-        //MODO OSCURO 
-
         const bdark = document.querySelector('#bdark');
         const main = document.querySelector('main');
         const body = document.querySelector('body');
@@ -532,8 +604,6 @@
 
 
     </script>
-        
-
         
         
        

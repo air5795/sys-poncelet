@@ -6,25 +6,32 @@ include("funciones.php");
 
 
 
+
+
 if ($_POST["operacion"] == "Crear") {
-
-
-    $stmt = $conexion->prepare("INSERT INTO cliente(nit, nombre, telefono, direccion, estatus)
-                                VALUES(:nit, :nombre, :telefono, :direccion, :estatus)");
+    $imagen = '';
+   
+    if ($_FILES["foto"]["name"] != '') {
+        $imagen = subir_imagen();
+    }
+   
+    $stmt = $conexion->prepare("INSERT INTO cliente(nit, nombre, telefono, direccion, foto)
+                                VALUES(:nit, :nombre, :telefono, :direccion, :foto )");
 
     $resultado = $stmt->execute(
         array(
-            ':nombre'         => $_POST["nombre"],
-            ':nit'            => $_POST["nit"],
-            ':telefono'       => $_POST["telefono"],
-            ':direccion'      => $_POST["direccion"],
-            ':estatus'        => '1'
-        
+            ':nit'           => $_POST["nit"],
+            ':nombre'            => $_POST["nombre"],
+            ':telefono'           => $_POST["telefono"],
+            ':direccion'               => $_POST["direccion"],
+            ':foto'             => $imagen
         )
     );
 
     if (!empty($resultado)) {
-        echo 'Registro creado';
+        echo 'Exito !! al insertar el registro en la base de datos.';
+    } else {
+        echo 'Error al insertar el registro en la base de datos.';
     }
 }
 
@@ -36,24 +43,43 @@ if ($_POST["operacion"] == "Crear") {
 
 
 if ($_POST["operacion"] == "Editar") {
+    $imagen = obtener_nombre_imagen($_POST["idcliente"]);
+
+
+    if ($_FILES["foto"]["name"] != '') {
+        unlink("productos/" . $imagen);
+         $imagen = subir_imagen();
+    }
+    else {
+
+        $imagen = @$_POST['img_o'];     
+    }
     
 
-    $stmt = $conexion->prepare("UPDATE salidas SET personal=:personal, lugar=:lugar, motivo=:motivo WHERE id_salida = :id_salida");
+
+
+
+    $stmt = $conexion->prepare("UPDATE cliente SET nit=:nit, nombre=:nombre, telefono=:telefono, direccion=:direccion,foto=:foto WHERE idcliente = :idcliente");
 
     $resultado = $stmt->execute(
         array(
-            ':id_salida'       => $_POST["id_salida"],
-            ':personal'       => $_POST["personal"],
-            ':lugar'         => $_POST["lugar"],
-            ':motivo'        => $_POST["motivo"]
-          
+            ':idcliente'      => $_POST["idcliente"],
+            ':nit'           => $_POST["nit"],
+            ':nombre'            => $_POST["nombre"],
+            ':telefono'           => $_POST["telefono"],
+            ':direccion'               => $_POST["direccion"],
+            ':foto'             => $imagen
 
         )
+
+        
 
         
     );
 
     if (!empty($resultado)) {
-        echo 'Registro actualizado';
+        echo 'Exito !! al insertar el registro en la base de datos.';
+    } else {
+        echo 'Error al actualizar el registro en la base de datos.';
     }
 }

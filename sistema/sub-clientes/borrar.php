@@ -3,16 +3,27 @@
 include('conexion.php');
 include("funciones.php");
 
-if(isset($_POST["id_salida"]))
+if(isset($_POST["idcliente"]))
 {
 
-	
+	$imagen = '';
+
+
+	$imagen = obtener_nombre_imagen($_POST["idcliente"]);
+	if($imagen != '')
+	{
+		unlink("productos/" . $imagen);
+	}
+
+
+
+
 	$stmt = $conexion->prepare(
-		"DELETE FROM salidas WHERE id_salida = :id_salida"
+		"DELETE FROM cliente WHERE idcliente = :idcliente"
 	);
 	$resultado = $stmt->execute(
 		array(
-			':id_salida'	=>	$_POST["id_salida"]
+			':idcliente'	=>	$_POST["idcliente"]
 		)
 	);
 	
