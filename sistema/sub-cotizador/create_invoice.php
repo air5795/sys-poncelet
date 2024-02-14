@@ -35,13 +35,13 @@ $invoice = new Invoice();
 		
 		<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.min.js"></script>
 
-        <link rel="shortcut icon" href="img/ICONO2.png">
-        <title>SIS-NAXSAN</title>
+        <link rel="shortcut icon" href="img/ICONOGRANDE2.png">
+        <title>SIS-PONCELET</title>
         <script src="js/invoice.js"></script>
         <link href="css/style.css" rel="stylesheet">
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>SIS-NAXSAN</title>
+        <title>SIS-PONCELET</title>
     </head>
 	<body class="sb-nav-fixed">
 
