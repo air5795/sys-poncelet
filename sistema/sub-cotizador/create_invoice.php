@@ -93,7 +93,7 @@ $invoice = new Invoice();
 		?>
             <div class="row">
                 <div class="col-sm-6">
-                    <h4><i class="bi bi-file-earmark-plus"></i> Crear Nueva Cotizacion - NAXSAN Comercializadora</h4>
+                    <h4><i class="bi bi-file-earmark-plus"></i> Crear Nueva Cotizacion </h4>
                         
                     
                 </div>
