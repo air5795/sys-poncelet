@@ -138,7 +138,7 @@
                         
                         <th style="padding:5px;">MONTO FINAL DEL CONTRATO EN "BS"</th>
                         <th style="padding:5px;">MONTO FINAL DEL CONTRATO EN "$"</th>
-                        <th style="padding:5px;" width="10%"><i class="bi bi-calendar-date"></i> Periodo de ejecucion (Fecha de inicio y finalizacion): Activar para ordenar la columna de manera ascendente</th>
+                        <th style="padding:5px;" width="20%"><i class="bi bi-calendar-date"></i> Periodo de ejecucion (Fecha de inicio y finalizacion): Activar para ordenar la columna de manera ascendente</th>
                         <th style="padding:5px;">REGISTRADO POR</th>
                         <th style="padding:5px;">ACTA N° 1</th>
                         <th style="padding:5px;">ACTA N° 2</th>
