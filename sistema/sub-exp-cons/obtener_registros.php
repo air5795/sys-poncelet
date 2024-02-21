@@ -99,7 +99,7 @@
 
 
 
-$fecha = '<div style="display:flex; justify-content: space-around; align-items: center; font-size:12px;" class="w-100">';
+$fecha = '<div style="display:flex; justify-content: space-evenly; align-items: center; font-size:12px;" class="w-100">';
 $fecha .= '<div><button style="background-color:green;color:white;border:none;">Fecha Inicio</button><br>'.$fecha_i.'</div>';
 $fecha .= '<div><button style="background-color:red;color:white;border:none;">Fecha Final</button><br>'.$fecha_f.'</div>';
 $fecha .= '</div>';
