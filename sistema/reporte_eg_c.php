@@ -27,96 +27,7 @@ ob_start();
     <meta name="author" content="" />
     <link href="css/style3.css" rel="stylesheet" />
 
-<style>
-    *{
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 10px;
-    text-align: center;
-}
-table , td, th {
-	border: 1px solid #595959;
-	border-collapse: collapse;
-}
-td, th {
-	padding: 3px;
-	width: 30px;
-	height: 25px;
-}
 
-
-.emp{
-    background: #deeaf6;
-    color: #0a0a0a;
-    font-size: 12px;
-    border-color: #0a0a0a;
-}
-
-.exp{
-    background:  #deeaf6;
-    font-size: 10px !important;
-    text-align: right;
-    
-}
-
-.exp2{
-    background: #ffffff;
-    font-size: 15px !important;
-    border-color: white;
-}
-
-.exp-betanzos{
-    background: #ffffff;
-    font-size: 13px !important;
-    font-family: arial;
-    border-color: white;
-}
-
-.im{
-    width: 180px;
-}
-
-.exp4{
-    border-top-color: white;
-    border-left-color: white;
-    border-right-color: white;
-}
-
-.exp5{
-
-    border-top-color: white;
-    border-left-color: white;
-    border-right-color: white;
-    border-bottom-color: white;   
-}
-
-
-.comer{
-    background:  #b6b6b6;
-    font-size: 13px !important;
-    text-align: center;
-}
-
-.comer2{
-    background:  #777777;
-    font-size: 14px !important;
-    text-align: center;
-    color:white;
-    font-style: italic;
-}
-
-.comer3 th {
-    background:  #c2c2c2;
-    font-size: 12px !important;
-    text-align: center;
-    color: #0a0a0a;
-    font-style: normal;
-    font-weight: lighter;
-    
-    
-}
-
-
-</style>
 
     <title>SISPONCELET</title>
 
@@ -128,16 +39,16 @@ td, th {
                     
                     
                         <tr>
-                            <td colspan="10" class="exp5"> <STRONG style="font-size:12px;"> FORMULARIO </STRONG></td>
+                            <td colspan="10" class="exp5"> <b style="font-size:12px;"> FORMULARIO </b></td>
                         </tr>
                         <tr>
-                            <td colspan="10" class="exp4"> <STRONG style="font-size:13px;"> EXPERIENCIA GENERAL DE LA EMPRESA </STRONG></td>
+                            <td colspan="10" class="exp4"> <b style="font-size:13px;"> EXPERIENCIA GENERAL DE LA EMPRESA </b></td>
                         </tr>
                         
                      
                     
                     <tr>
-                        <td colspan="10" class="emp"> <STRONG>  EMPRESA CONSTRUCTORA PONCELET </STRONG></td> 
+                        <td colspan="10" class="emp"> <b>  EMPRESA CONSTRUCTORA PONCELET </b></td> 
                     </tr>
                     <tr class="emp" >
                         <th>N°</th>
@@ -204,14 +115,14 @@ td, th {
                                 <td><?php echo $data['ubicacion'] ?></td>
                                 <td><?php echo number_format($data['monto_bs'],2,'.',',').' Bs' ?></td>
                                 <td>
-                                    <strong>FECHA INICIO</strong> <br>
+                                    <b>FECHA INICIO</b> <br>
                                     <?php 
                                         setlocale(LC_TIME, "spanish");
                                         //echo $data['fecha_ejecucion']
                                         echo strftime('%e de %B %Y', strtotime($data['fecha_ejecucion']));
                                     ?> 
                                     <br>
-                                    <strong>FECHA FINALIZACION</strong><br>
+                                    <b>FECHA FINALIZACION</b><br>
                                     <?php 
                                         setlocale(LC_TIME, "spanish");
                                         //echo $data['fecha_ejecucion']
