@@ -39,16 +39,16 @@ ob_start();
                     
                     
                         <tr>
-                            <td colspan="10" class="exp5"> <b> FORMULARIO </b></td>
+                            <td colspan="10" class="exp5"> <b style="font-size:12px;font-weight: bold;"> FORMULARIO </b></td>
                         </tr>
                         <tr>
-                            <td colspan="10" class="exp4"> <b> EXPERIENCIA GENERAL DE LA EMPRESA </b></td>
+                            <td colspan="10" class="exp4"> <b style="font-size:13px;font-weight: bold;"> EXPERIENCIA GENERAL DE LA EMPRESA </b></td>
                         </tr>
                         
                      
                     
                     <tr>
-                        <td colspan="10" class="emp"> <b>  EMPRESA CONSTRUCTORA PONCELET </b></td> 
+                        <td colspan="10" class="emp"> <b style="font-weight: bold;">  EMPRESA CONSTRUCTORA PONCELET </b></td> 
                     </tr>
                     <tr class="emp" >
                         <th>N°</th>
@@ -115,14 +115,14 @@ ob_start();
                                 <td><?php echo $data['ubicacion'] ?></td>
                                 <td><?php echo number_format($data['monto_bs'],2,'.',',').' Bs' ?></td>
                                 <td>
-                                    <b>FECHA INICIO</b> <br>
+                                    <b style="font-weight: bold;">FECHA INICIO</b> <br>
                                     <?php 
                                         setlocale(LC_TIME, "spanish");
                                         //echo $data['fecha_ejecucion']
                                         echo strftime('%e de %B %Y', strtotime($data['fecha_ejecucion']));
                                     ?> 
                                     <br>
-                                    <b>FECHA FINALIZACION</b><br>
+                                    <b style="font-weight: bold;">FECHA FINALIZACION</b><br>
                                     <?php 
                                         setlocale(LC_TIME, "spanish");
                                         //echo $data['fecha_ejecucion']
