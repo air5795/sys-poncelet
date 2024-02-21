@@ -48,7 +48,7 @@
 <div class="container-fluid  fondo ">    
         <div class="row">
             <div class="col-sm-6">
-                <h2><i class="bi bi-cart4"></i> Experiencia General Comercializadora</h2>
+                <h2><i class="bi bi-cone"></i> Experiencia General Constructora</h2>
                 
             </div>
 
@@ -100,13 +100,14 @@
             </div>
 
             <div class="col-sm-2">
-                    <a class="btn btn-outline-danger btn-sm w-100  " href="../reporte_eg.php" > <i class="bi bi-file-pdf-fill"></i> <br> Lista Exp. General   </a>
-                  
+            
 
+            <a data-bs-toggle="modal" data-bs-target="#exp" class="btn btn-outline-danger btn-sm w-100  " href="../rep_ImgEG.php" > <i class="bi bi-file-pdf-fill"></i> <br> Listas Exp. General   </a>
+                  
             </div>
 
             <div class="col-sm-2">
-                    <a class="btn btn-outline-danger btn-sm w-100  " href="../rep_ImgEG.php" > <i class="bi bi-file-pdf-fill"></i> <br> Actas Exp. General   </a>
+                    <a class="btn btn-outline-danger btn-sm w-100  " href="../rep_ImgEG_c.php" > <i class="bi bi-file-pdf-fill"></i> <br> Actas Exp. General   </a>
                   
             </div>
 
@@ -138,7 +139,7 @@
                         
                         <th style="padding:5px;">MONTO FINAL DEL CONTRATO EN "BS"</th>
                         <th style="padding:5px;">MONTO FINAL DEL CONTRATO EN "$"</th>
-                        <th style="padding:5px;" width="20%"><i class="bi bi-calendar-date"></i> Periodo de ejecucion (Fecha de inicio y finalizacion): Activar para ordenar la columna de manera ascendente</th>
+                        <th style="padding:5px;" width="15%"><i class="bi bi-calendar-date"></i> Periodo de ejecucion (Fecha de inicio y finalizacion): Activar para ordenar la columna de manera ascendente</th>
                         <th style="padding:5px;">REGISTRADO POR</th>
                         <th style="padding:5px;">ACTA N° 1</th>
                         <th style="padding:5px;">ACTA N° 2</th>
@@ -450,6 +451,63 @@
                         </div>
                     </div>
                 </div>
+
+
+
+                
+
+
+<!-- Modal para experiencias -->
+<div class="modal fade" id="exp" tabindex="-1" aria-labelledby="exp" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exp">Imprimir Listas de Exp. General</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+
+                <div class="row">
+
+                <p>POTOSÍ</p> <hr>
+
+
+                <div class="col-sm-4">
+                        <a class="btn btn-outline-danger btn-sm w-100  " href="../reporte_eg_c.php" > <i class="bi bi-file-pdf-fill"></i> <br> GAM POTOSI </a> 
+                </div>
+                <div class="col-sm-4">
+                        <a class="btn btn-outline-danger btn-sm w-100  " href="../reporte_eg_c2.php" > <i class="bi bi-file-pdf-fill"></i> <br> GAM COTAGAITA </a> 
+                </div>
+                <div class="col-sm-4">
+                        <a class="btn btn-outline-danger btn-sm w-100  " href="../reporte_eg_c3.php" > <i class="bi bi-file-pdf-fill"></i> <br> GAM CHAQUI </a> 
+                </div>
+                <div class="col-sm-4">
+                        <a class="btn btn-outline-danger btn-sm w-100  " href="../reporte_eg_c4.php" > <i class="bi bi-file-pdf-fill"></i> <br> GAM COLCHA K </a> 
+                </div>
+                <div class="col-sm-4">
+                        <a class="btn btn-outline-danger btn-sm w-100  " href="../reporte_eg_c6.php" > <i class="bi bi-file-pdf-fill"></i> <br> GAM PUNA </a> 
+                </div>
+                <div class="col-sm-4">
+                        <a class="btn btn-outline-danger btn-sm w-100  " href="../reporte_eg_c7.php" > <i class="bi bi-file-pdf-fill"></i> <br> GAM PORCO </a> 
+                </div>
+                <div class="col-sm-4">
+                        <a class="btn btn-outline-danger btn-sm w-100  " href="../reporte_eg_c8.php" > <i class="bi bi-file-pdf-fill"></i> <br> GAM BETANZOS </a> 
+                </div>
+
+                <hr><p> CHUQUISACA</p> <hr>
+
+
+                <div class="col-sm-4">
+                        <a class="btn btn-outline-success btn-sm w-100  " href="../reporte_eg_c5.php" > <i class="bi bi-file-pdf-fill"></i> <br> GAM SUCRE </a> 
+                </div>
+
+                </div>
+        
+      </div>
+      
+    </div>
+  </div>
+</div>
 
 
                 
