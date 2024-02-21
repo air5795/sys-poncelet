@@ -107,7 +107,7 @@
             </div>
 
             <div class="col-sm-2">
-                    <a class="btn btn-outline-danger btn-sm w-100  " href="../rep_ImgEG_c.php" > <i class="bi bi-file-pdf-fill"></i> <br> Actas Exp. General   </a>
+                    <a class="btn btn-outline-danger btn-sm w-100  " href="../rep_imgEG_c.php" > <i class="bi bi-file-pdf-fill"></i> <br> Actas Exp. General   </a>
                   
             </div>
 
