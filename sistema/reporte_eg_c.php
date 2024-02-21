@@ -39,7 +39,7 @@ ob_start();
                     
                     
                         <tr>
-                            <td colspan="10" class="exp5"> <span style="font-size:12px;"> <b> FORMULARIO </b></span></td>
+                            <td colspan="10" class="exp5"> <b style="font-size:12px;font-weight: bold;"> FORMULARIO </b></td>
                         </tr>
                         <tr>
                             <td colspan="10" class="exp4"> <b style="font-size:13px;font-weight: bold;"> EXPERIENCIA GENERAL DE LA EMPRESA </b></td>
