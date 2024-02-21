@@ -15,6 +15,7 @@ if (isset($_POST["id_exp"])) {
         $salida["monto_bs"] = $fila["monto_bs"];
         $salida["monto_dolares"] = $fila["monto_dolares"];
         $salida["fecha_ejecucion"] = $fila["fecha_ejecucion"];
+        $salida["fecha_final"] = $fila["fecha_final"];
         $salida["participa_aso"] = $fila["participa_aso"];
         $salida["n_socio"] = $fila["n_socio"];
         $salida["profesional_resp"] = $fila["profesional_resp"];

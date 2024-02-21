@@ -12,6 +12,7 @@
        $query .= 'OR monto_bs LIKE "%' . $_POST["search"]["value"] . '%" ';
        $query .= 'OR ubicacion LIKE "%' . $_POST["search"]["value"] . '%" ';
        $query .= 'OR fecha_ejecucion LIKE "%' . $_POST["search"]["value"] . '%" ';
+       $query .= 'OR fecha_final LIKE "%' . $_POST["search"]["value"] . '%" ';
        $query .= 'OR participa_aso LIKE "%' . $_POST["search"]["value"] . '%" ';
        $query .= 'OR n_socio LIKE "%' . $_POST["search"]["value"] . '%" ';
        $query .= 'OR profesional_resp LIKE "%' . $_POST["search"]["value"] . '%" ';
@@ -88,11 +89,15 @@
         
 
        
-        //fecha de presentacion
+        //fecha inicial
         setlocale(LC_TIME, "spanish");
-        $fecha =  strftime('%e de %B %Y', strtotime($fila['fecha_ejecucion']));
+        $fecha_i =  strftime('%e de %B %Y', strtotime($fila['fecha_ejecucion']));
 
-        //
+        //fecha final
+        setlocale(LC_TIME, "spanish");
+        $fecha_f =  strftime('%e de %B %Y', strtotime($fila['fecha_final']));
+
+        $fecha = '<span style="font-size:12px;background-color:#d1d1d1;text-align: center;color:#4e4e4e;border: 1px solid #2a2a2a;" class="btn btn-info w-100 ">Fecha de Ejecucion '.$fecha_i.'</span>';
         
 
         

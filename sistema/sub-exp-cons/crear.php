@@ -75,10 +75,10 @@ if ($_POST["operacion"] == "Crear") {
     }
     
     
-    $stmt = $conexion->prepare("INSERT INTO exp_general_c(nombre_contratante, obj_contrato, ubicacion, monto_bs, monto_dolares, fecha_ejecucion, 
+    $stmt = $conexion->prepare("INSERT INTO exp_general_c(nombre_contratante, obj_contrato, ubicacion, monto_bs, monto_dolares, fecha_ejecucion, fecha_final, 
                                             participa_aso, n_socio, profesional_resp, usuario_id, image, image2, image3, 
                                             image4, image5, image6,image7,image8,image9,image10,image11,image12,image13,image14,image15)
-                                VALUES(:nombre_contratante, :obj_contrato, :ubicacion, :monto_bs, :monto_dolares, :fecha_ejecucion, :participa_aso, 
+                                VALUES(:nombre_contratante, :obj_contrato, :ubicacion, :monto_bs, :monto_dolares, :fecha_ejecucion, :fecha_final, :participa_aso, 
                                             :n_socio, :profesional_resp, :usuario_id, :image, :image2, :image3, :image4, :image5, :image6, :image7,
                                             :image8, :image9, :image10, :image11, :image12, :image13, :image14, :image15)");
 
@@ -91,6 +91,7 @@ if ($_POST["operacion"] == "Crear") {
             ':monto_bs' => $_POST['monto_bs'],
             ':monto_dolares' => $_POST['monto_dolares'],
             ':fecha_ejecucion' => $_POST['fecha_ejecucion'],
+            ':fecha_final' => $_POST['fecha_final'],
             ':participa_aso' => $_POST['participa_aso'],
             ':n_socio' => $_POST['n_socio'],
             ':profesional_resp' => $_POST['profesional_resp'],
@@ -271,7 +272,7 @@ if ($_POST["operacion"] == "Editar") {
 
 
 
-    $stmt = $conexion->prepare("UPDATE exp_general_c SET nombre_contratante=:nombre_contratante, obj_contrato=:obj_contrato, ubicacion=:ubicacion, monto_bs=:monto_bs, monto_dolares=:monto_dolares, fecha_ejecucion=:fecha_ejecucion, participa_aso=:participa_aso, 
+    $stmt = $conexion->prepare("UPDATE exp_general_c SET nombre_contratante=:nombre_contratante, obj_contrato=:obj_contrato, ubicacion=:ubicacion, monto_bs=:monto_bs, monto_dolares=:monto_dolares, fecha_ejecucion=:fecha_ejecucion, fecha_final=:fecha_final, participa_aso=:participa_aso, 
     n_socio=:n_socio,profesional_resp=:profesional_resp,usuario_id=:usuario_id,image=:image,image2=:image2,image3=:image3,image4=:image4
     ,image5=:image5,image6=:image6,image7=:image7,image8=:image8,image9=:image9,image10=:image10,image11=:image11,image12=:image12
     ,image13=:image13,image14=:image14,image15=:image15 WHERE id_exp = :id_exp");
@@ -285,6 +286,7 @@ if ($_POST["operacion"] == "Editar") {
             ':monto_bs'    => $_POST["monto_bs"],
             ':monto_dolares'    => $_POST["monto_dolares"],
             ':fecha_ejecucion'    => $_POST["fecha_ejecucion"],
+            ':fecha_final'    => $_POST["fecha_final"],
             ':participa_aso'    => $_POST["participa_aso"],
             ':n_socio'    => $_POST["n_socio"],
             ':profesional_resp'    => $_POST["profesional_resp"],

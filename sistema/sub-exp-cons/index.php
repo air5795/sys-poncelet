@@ -138,7 +138,7 @@
                         
                         <th style="padding:5px;">MONTO FINAL DEL CONTRATO EN "BS"</th>
                         <th style="padding:5px;">MONTO FINAL DEL CONTRATO EN "$"</th>
-                        <th style="padding:5px;" width="10%"><i class="bi bi-calendar-date"></i> FECHA EJECUCION</th>
+                        <th style="padding:5px;" width="10%"><i class="bi bi-calendar-date"></i> Periodo de ejecucion (Fecha de inicio y finalizacion): Activar para ordenar la columna de manera ascendente</th>
                         <th style="padding:5px;">REGISTRADO POR</th>
                         <th style="padding:5px;">ACTA N° 1</th>
                         <th style="padding:5px;">ACTA N° 2</th>
@@ -202,6 +202,13 @@
                         <div class=" mb-3 mb-md-0">
                                     <span for="inputFirstName">Período de ejecución </span> 
                                     <input class="form-control form-control-sm" name="fecha_ejecucion" id="fecha_ejecucion"   type="date" />
+                                 </div>
+                        </div>
+
+                        <div class="col-6">
+                        <div class=" mb-3 mb-md-0">
+                                    <span for="inputFirstName">Período de finalizacion </span> 
+                                    <input class="form-control form-control-sm" name="fecha_final" id="fecha_final"   type="date" />
                                  </div>
                         </div>
 
@@ -573,6 +580,7 @@
             var monto_bs = $('#monto_bs').val();
             var monto_dolares = $('#monto_dolares').val();
             var fecha_ejecucion = $('#fecha_ejecucion').val();
+            var fecha_final = $('#fecha_final').val();
             var participa_aso = $('#participa_aso').val();
             var n_socio = $('#n_socio').val();
             var profesional_resp = $('#profesional_resp').val();
@@ -743,7 +751,7 @@
 
             
             	
-		    if(nombre_contratante != '' && obj_contrato != '' && ubicacion != '' && monto_bs != '' && fecha_ejecucion != '' && image != '')
+		    if(nombre_contratante != '' && obj_contrato != '' && ubicacion != '' && monto_bs != '' && fecha_ejecucion != '' && fecha_final != '' && image != '')
                 {
                     $.ajax({
                         url:"crear.php",
@@ -794,6 +802,7 @@
                         $('#monto_bs').val(data.monto_bs);
                         $('#monto_dolares').val(data.monto_dolares);
                         $('#fecha_ejecucion').val(data.fecha_ejecucion);
+                        $('#fecha_final').val(data.fecha_final);
                         $('#participa_aso').val(data.participa_aso);
                         $('#n_socio').val(data.n_socio);
                         
