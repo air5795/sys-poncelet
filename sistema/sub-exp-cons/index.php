@@ -139,7 +139,6 @@
                         <th style="padding:5px;">MONTO FINAL DEL CONTRATO EN "BS"</th>
                         <th style="padding:5px;">MONTO FINAL DEL CONTRATO EN "$"</th>
                         <th style="padding:5px;" width="10%"><i class="bi bi-calendar-date"></i> FECHA EJECUCION</th>
-                        <th style="padding:5px;" width="15%">DETALLE</th>
                         <th style="padding:5px;">REGISTRADO POR</th>
                         <th style="padding:5px;">ACTA N° 1</th>
                         <th style="padding:5px;">ACTA N° 2</th>
@@ -227,12 +226,7 @@
                                  </div>
                         </div>
 
-                        <div class="col-12">
-                            <div class=" mb-3 mb-md-0">
-                                    <span for="inputFirstName">Detalle de la Experiencia <span style="color:red"> (Colocar Palabras Clave ejm. Computadoras) </span></span> 
-                                    <input class="form-control form-control-sm bg-info bg-opacity-25" name="detalle" id="detalle" type="text"  />
-                                 </div>
-                        </div>
+                        
 
                         <p></p>
 
@@ -582,7 +576,7 @@
             var participa_aso = $('#participa_aso').val();
             var n_socio = $('#n_socio').val();
             var profesional_resp = $('#profesional_resp').val();
-            var detalle = $('#detalle').val();
+            
             
             var extension = $('#image').val().split('.').pop().toLowerCase();
             var extension2 = $('#image2').val().split('.').pop().toLowerCase();
@@ -749,7 +743,7 @@
 
             
             	
-		    if(nombre_contratante != '' && obj_contrato != '' && ubicacion != '' && monto_bs != '' && fecha_ejecucion != '' && detalle != '' && image != '')
+		    if(nombre_contratante != '' && obj_contrato != '' && ubicacion != '' && monto_bs != '' && fecha_ejecucion != '' && image != '')
                 {
                     $.ajax({
                         url:"crear.php",
@@ -802,7 +796,7 @@
                         $('#fecha_ejecucion').val(data.fecha_ejecucion);
                         $('#participa_aso').val(data.participa_aso);
                         $('#n_socio').val(data.n_socio);
-                        $('#detalle').val(data.detalle);
+                        
                         $('#profesional_resp').val(data.profesional_resp);
                         $('#img-delete').show();
 

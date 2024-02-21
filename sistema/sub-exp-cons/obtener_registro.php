@@ -18,7 +18,7 @@ if (isset($_POST["id_exp"])) {
         $salida["participa_aso"] = $fila["participa_aso"];
         $salida["n_socio"] = $fila["n_socio"];
         $salida["profesional_resp"] = $fila["profesional_resp"];
-        $salida["detalle"] = $fila["detalle"];
+        
 
         /* imagen1 */ 
         if ($fila["image"] != "") {

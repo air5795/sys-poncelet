@@ -15,12 +15,11 @@
        $query .= 'OR participa_aso LIKE "%' . $_POST["search"]["value"] . '%" ';
        $query .= 'OR n_socio LIKE "%' . $_POST["search"]["value"] . '%" ';
        $query .= 'OR profesional_resp LIKE "%' . $_POST["search"]["value"] . '%" ';
-       $query .= 'OR detalle LIKE "%' . $_POST["search"]["value"] . '%" ';
        $query .= 'OR obj_contrato LIKE "%' . $_POST["search"]["value"] . '%" ';
     }
 
     if (isset($_POST["order"])) {
-        $query .= 'ORDER BY' . $_POST['order']['0']['column'] .' '.$_POST["order"][0]['dir'] . '';        
+        $query .= 'ORDER BY ' . $_POST['order']['0']['column'] .' '.$_POST["order"][0]['dir'] . '';        
     }else{
         $query .= 'ORDER BY id_exp DESC ';
     }
@@ -96,11 +95,7 @@
         //
         
 
-        if ($fila['detalle'] != '') {
-            $detalle = '<span style="font-size:12px;background-color:#626262;text-align: left;color:#05ffd1;border: 1px solid #05ffd1;" class="btn btn-info w-100 "><i class="bi bi-clipboard"></i> '.' '.$fila['detalle'].'</span>';
-        }else {
-            $detalle = '<span style="font-size:12px;background-color:#626262;text-align: left;color:#7fd0ff;" class="btn btn-info w-100 "><i class="bi bi-cart4"> Comercializadora</i></span>';
-        }
+        
        
 
 
@@ -114,7 +109,7 @@
         $sub_array[] = number_format($fila['monto_dolares'],2,'.',',').' $';
       
         $sub_array[] = $fecha;
-        $sub_array[] = $detalle;
+       
         $sub_array[] = $usuario;
 
         //$sub_array[] = $fila["participa_aso"];
