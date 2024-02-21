@@ -100,8 +100,8 @@
 
 
 $fecha = '<div style="align-items: center; font-size:12px;" class="w-100">';
-$fecha .= '<div><a class="btn btn-success w-100">Fecha Inicio</a><br>'.$fecha_i.'</div>';
-$fecha .= '<div><a class="btn btn-danger w-100">Fecha Final</a><br>'.$fecha_f.'</div>';
+$fecha .= '<div><a class="btn btn-success btn-sm w-100">Fecha de Inicio</a><br>'.$fecha_i.'</div>';
+$fecha .= '<div><a class="btn btn-danger btn-sm w-100">Fecha de Finalizacion</a><br>'.$fecha_f.'</div>';
 $fecha .= '</div>';
 
 
