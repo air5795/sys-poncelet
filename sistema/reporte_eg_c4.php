@@ -72,25 +72,36 @@ ob_start();
                     
                     <?php
                     // rescatar datos DB 
-                    $query = mysqli_query($conexion, "SELECT
-                                                            ROW_NUMBER() OVER(
-                                                        ORDER BY
-                                                            fecha_ejecucion
-                                                        ) row_num,
-                                                        fecha_ejecucion,
-                                                        fecha_final,
-                                                        monto_bs,
-                                                        monto_dolares,
-                                                        nombre_contratante,
-                                                        n_socio,
-                                                        obj_contrato,
-                                                        participa_aso,
-                                                        profesional_resp,
-                                                        ubicacion
-                                                        FROM
-                                                            exp_general_c
-                                                        ORDER BY
-                                                            fecha_ejecucion;");
+                    $query = mysqli_query($conexion, "SELECT 
+                                    (@row_number:=@row_number + 1) AS row_num,
+                                    fecha_ejecucion,
+                                    fecha_final,
+                                    monto_bs,
+                                    monto_dolares,
+                                    nombre_contratante,
+                                    n_socio,
+                                    obj_contrato,
+                                    participa_aso,
+                                    profesional_resp,
+                                    ubicacion
+                                FROM 
+                                    (SELECT 
+                                        fecha_ejecucion,
+                                        fecha_final,
+                                        monto_bs,
+                                        monto_dolares,
+                                        nombre_contratante,
+                                        n_socio,
+                                        obj_contrato,
+                                        participa_aso,
+                                        profesional_resp,
+                                        ubicacion
+                                    FROM 
+                                        exp_general_c
+                                    ORDER BY 
+                                        fecha_ejecucion) AS subquery,
+                                    (SELECT @row_number:=0) AS t;");
+
 
 
 
