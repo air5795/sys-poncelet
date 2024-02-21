@@ -97,7 +97,7 @@
         setlocale(LC_TIME, "spanish");
         $fecha_f =  strftime('%e de %B %Y', strtotime($fila['fecha_final']));
 
-        $fecha = '<span style="font-size:12px;background-color:#d1d1d1;text-align: center;color:#4e4e4e;border: 1px solid #2a2a2a;" class="btn btn-info w-100 ">Fecha de Ejecucion '.$fecha_i.'</span>';
+        $fecha = '<span style="font-size:12px;background-color:#d1d1d1;text-align: center;color:#4e4e4e;border: 1px solid #2a2a2a;" class="btn btn-info w-100 ">Fecha de Ejecucion </br>'.$fecha_i.'</span>';
         
 
         
