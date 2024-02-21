@@ -554,8 +554,8 @@ if (empty($_SESSION['active'])) {
 
                                                 <div class="collapse" id="pagesCollapseAuth" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
                                                     <nav class="sb-sidenav-menu-nested nav">
-                                                        <a class="nav-link" href="registro_exp_c.php">Registrar Experiencia</a>
-                                                        <a class="nav-link" href="lista_exp_c.php">Ver Experiencia G.</a>
+                                                        <a class="nav-link" href="sub-exp-cons/">Gestor Experiencia</a>
+                                                        
                                                     </nav>
                                                 </div>
 
