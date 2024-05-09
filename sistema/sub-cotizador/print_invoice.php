@@ -148,6 +148,8 @@ $output .= '<tr>
     <tr>
       <td style="border:coral;background-color:#ffffe0; text-align: right; padding:7px;"> N° de Cotizacion : X0000'. $invoiceValues['id_cotizacion'] . '
       </td>
+      <td style="border:coral;background-color:#ffffe0; text-align: right; padding:7px;"> FECHA : '. $invoiceDate. '
+      </td>
     </tr>
   </table>
 
