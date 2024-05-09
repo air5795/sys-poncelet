@@ -146,11 +146,13 @@ $output .= '<tr>
     <td colspan="8">
     <table width="100%" border="1">
     <tr>
-      <td style="border:coral;background-color:#ffffe0; text-align: right; padding:7px;"> N° de Cotizacion : X0000'. $invoiceValues['id_cotizacion'] . '
-      </td>
-      <td style="border:coral;background-color:#ffffe0; text-align: right; padding:7px;"> FECHA : '. $invoiceDate. '
+      <td style="border:coral;background-color:#ffffe0; text-align: right; padding:7px;"> N° de Cotizacion : P-0000'. $invoiceValues['id_cotizacion'] . '
       </td>
     </tr>
+    <tr>
+    <td style="border:coral;background-color:WHITE; text-align: right; padding:7px;"> Fecha de Cotizacion : '. $invoiceDate. '
+      </td>
+      <tr>
   </table>
 
 
