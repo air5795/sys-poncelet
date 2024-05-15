@@ -169,7 +169,7 @@ if (empty($_SESSION['active'])) {
                                 <nav class="sb-sidenav-menu-nested nav">
                                     <!--<a class="nav-link" href="categorias_i.php">Categorias mercaderia</a> 
                                     <a class="nav-link" href="inventario_i.php">Gestor Inventario</a>-->
-                                    <a class="nav-link" href="#">Inventario de Mercaderia</a>
+                                    <a class="nav-link" href="../sub-inventarios-mercaderia/">Inventario de Mercaderia</a>
                                     <a class="nav-link" href="../sub-inventarios-activos/">Inventario Activos Fijos</a>
                                 </nav>
                             </div>

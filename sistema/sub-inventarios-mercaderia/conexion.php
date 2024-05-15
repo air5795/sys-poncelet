@@ -6,7 +6,7 @@ if ($_SERVER['SERVER_NAME'] == 'localhost') {
     $usuario = "root";
     $password = "";
     $host = "localhost:3316";
-    $dbname = "naxsan";
+    $dbname = "cotizacion";
 } else {
     // Configuración para entorno de producción
     $usuario = "airsoftb_naxsan";

@@ -3,39 +3,29 @@
 include('conexion.php');
 include("funciones.php");
 
-if(isset($_POST["id_producto"]))
+if(isset($_POST["id_inv"]))
 {
 
 	$imagen = '';
-	$ficha = ''; 
-	$certificados = '';
+	
 
-	$imagen = obtener_nombre_imagen($_POST["id_producto"]);
+	$imagen = obtener_nombre_imagen($_POST["id_inv"]);
 	if($imagen != '')
 	{
-		unlink("productos/" . $imagen);
+		unlink("inventario/" . $imagen);
 	}
-	$ficha = obtener_nombre_ficha($_POST["id_producto"]);
-	if($ficha != '')
-	{
-		unlink("fichas/" . $ficha);
-	}
-	$certificados = obtener_nombre_certificado($_POST["id_producto"]);
-	if($certificados != '')
-	{
-		unlink("certificados/" . $certificados);
-	}
+	
 
 
 
 
 
 	$stmt = $conexion->prepare(
-		"DELETE FROM productos WHERE id_producto = :id_producto"
+		"DELETE FROM inventario WHERE id_inv = :id_inv"
 	);
 	$resultado = $stmt->execute(
 		array(
-			':id_producto'	=>	$_POST["id_producto"]
+			':id_inv'	=>	$_POST["id_inv"]
 		)
 	);
 	

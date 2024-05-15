@@ -48,29 +48,30 @@
 <div class="container-fluid  fondo ">    
         <div class="row">
             <div class="col-sm-6">
-                <h2><i class="fa-solid fa-database"></i> BD - Productos</h2>
+                <h2><i class="fa-solid fa-database"></i> BD - Mercaderia</h2>
                 
             </div>
 
             <?php
 
-                $result=mysqli_query($conexion,"SELECT count(*) as total from productos");
+                $result=mysqli_query($conexion,"SELECT count(*) as total from inventario");
                 $data=mysqli_fetch_assoc($result);
                 $data['total'];
 
             ?>
 
             <div class="col-sm-2">
-                <a class="btn btn-secondary w-100 disabled" href=""> <strong><i class="bi bi-box-seam"> - </i>  <?php echo $data['total']; ?> </strong>  Productos </a>
+                <a class="btn btn-secondary w-100 disabled" href=""> <strong><i class="bi bi-box-seam"> - </i>  <?php echo $data['total']; ?> </strong>  Productos  </a>
             
                 
             </div>
 
-
             <div class="col-sm-2">
-                <a class="btn btn-danger w-100" style="background-color: #ff5050;border:none;" href="../sub-cotizador/"><i class="bi bi-file-earmark-ruled"></i> Ir a Cotizaciones </a>
-                
+                <a class="btn btn-danger w-100 " href="../reporte_inventario.php"> <strong><i class="bi bi-printer"></i> </strong>  IMPRMIR </a>
             </div>
+
+
+            
 
             <div class="col-sm-2 ">
                 
@@ -93,17 +94,12 @@
                 <thead>
                     <tr>
                         <th>ID</th>
-                        <th width="25%">NOMBRE Y DESCRIPCION</th>
-                        <th>MARCA</th>
-                        <th>U/M</th>
-                        <th>P. COMPRA</th>
-                        <th>P. VENTA</th>
-                        <th>TIPO P.</th>
-                        <th>PROVEEDOR</th>
-                        <th>FECHA REGISTRO</th>
-                        <th>IMG</th>
-                        <th>F.T.</th>
-                        <th>CER.</th>
+                        <th width="25%">ARTICULO</th>
+                        <th>FECHA REGISTRADA</th>
+                        <th>STOCK</th>
+                       
+                        
+                        <th>FOTO</th>
                         <th></th>
                         <th></th>
                     </tr>
@@ -135,92 +131,13 @@
                     <div class="row">
 
                         <div class="col-12">
-                            <label for="nombre" style="font-family: sans-serif;">Ingrese el Nombre o Descripción <span style="color:red"> *</span></label>
-                            <input type="text" name="nombre" id="nombre" class="form-control form-control-sm">
+                            <label for="nombre" style="font-family: sans-serif;">Ingrese el nombre del Articulo <span style="color:red"> *</span></label>
+                            <input type="text" name="articulo" id="articulo" class="form-control form-control-sm">
                         </div>
                         <div class="col-6">
-                            <label for="marca" style="font-family: sans-serif;">Ingrese la Marca</label>
-                            <input type="text" name="marca" id="marca" class="form-control form-control-sm">
+                            <label for="stock" style="font-family: sans-serif;">Ingrese el Stock</label>
+                            <input type="number" name="stock" id="stock" class="form-control form-control-sm">
                         </div> 
-                        <div class="col-6">
-                            <label for="unidad" style="font-family: sans-serif;">Ingrese Unidad Medible (U/M) <span style="color:red"> *</span></label>
-                            <select name="unidad" id="unidad" class="form-control form-control-sm">
-                                <option value="">Selecciona una Opcion</option>
-                                <option value="Unidad">Unidad</option>
-                                <option value="Caja">Caja</option>
-                                <option value="Pieza">Pieza</option>
-                                <option value="Equipo">Equipo</option>
-                                <option value="Paquete">Paquete</option>
-                                <option value="Pliegue">Pliegue</option>
-                                <option value="Pliego">Pliego</option>
-                                <option value="Par">Par</option>
-                                <option value="Docena">Docena</option>
-                                <option value="Bidon">Bidon</option>
-                                <option value="Block">Block</option>
-                                <option value="Bolsa">Bolsa</option>
-                                <option value="Bote">Bote</option>
-                            </select>
-                        </div>
-
-                        
-
-
-                        <div class="col-6">
-                            <label for="tipo" style="font-family: sans-serif;">Ingrese Tipo de Producto <span style="color:red"> *</span></label>
-                            <select name="tipo" id="tipo" class="form-control form-control-sm ">
-                                <option value="">Selecciona una Opcion</option>
-                                <option value="limpieza">Material de Limpieza</option>
-                                <option value="mobiliario">Material Mobiliario</option>
-                                <option value="Musical">Material Musical</option>
-                                <option value="Hospitalario">Material Hospitalario</option>
-                                <option value="Tecnologico">Material Tecnologico</option>
-                                <option value="Cocina">Material de Cocina</option>
-                                <option value="Textil">Material Textil</option>
-                                <option value="Vehiculos">Vehiculos</option>
-                                <option value="Ferreteria">Ferreteria</option>
-                                <option value="industrial">Seguridad Industrial</option>
-                                <option value="alimentos">Alimentos</option>
-                                <option value="escritorio">Material de Escritorio</option>
-                                <option value="policial">Material Policial</option>
-                                <option value="deportivo">Material Deportivo</option>
-                                <option value="belleza">Material de Belleza</option>
-                            </select>
-                        </div>
-
-                        <div class="col-6">
-                            <label for="proveedor" style="font-family: sans-serif;">Ingrese Proveedor</label>
-                            <input type="text" name="proveedor" id="proveedor" class="form-control form-control-sm">
-                        </div>
-
-                        <div class="col-6">
-                            <label for="pc" style="font-family: sans-serif;">Ingrese Precio de Compra (Bs) <span style="color:red"> *</span></label>
-                            <input oninput="calcular_a_bs()" type="text" name="pc" id="pc" class="form-control form-control-sm" style="background-color: #e5ffe0; color:green; font-weight: 600;">
-                        </div>
-
-                        <div class="col-6">
-                            <label for="pv" style="font-family: sans-serif;">Ingrese Precio de Venta (Bs) <span style="color:red"> *</span></label>
-                            <input type="text" name="pv" id="pv" class="form-control form-control-sm" style="background-color: #e5ffe0; color:green; font-weight: 600;">
-                        </div>
-
-                        <div class="col-6">
-                            <label for="ficha" style="font-family: sans-serif;">Ingrese Ficha Tecnica</label>
-                            <input type="file" class="form-control form-control-sm" name="ficha" id="ficha">
-                        </div>
-                        <div class="col-6">
-                                <label for="ficha" style="font-family: sans-serif;"></label>
-                                <span id="pdf-subido" class="alert-sm"></span>
-                        </div>
-                        
-
-                        <div class="col-6">
-                            <label for="certificado" style="font-family: sans-serif;">Ingrese Certificado</label>
-                            <input type="file" class="form-control form-control-sm" name="certificado" id="certificado">
-                        </div>
-
-                        <div class="col-6">
-                            <label for="certificado" style="font-family: sans-serif;"></label>
-                            <span id="certificado-subido" class="alert-sm"></span>
-                        </div>
                         
 
                         <div class="col-6">
@@ -244,7 +161,7 @@
 
                     </div>
                     <div class="modal-footer">
-                        <input type="hidden" name="id_producto" id="id_producto">
+                        <input type="hidden" name="id_inv" id="id_inv">
                         <input type="hidden" name="operacion" id="operacion">
 
                         <input type="reset" value="Limpiar" class="btn btn-secondary"> 
@@ -338,11 +255,9 @@
                 $("#action").val("Crear Producto");
                 $("#operacion").val("Crear");
                 $('#imagen-subida').html("");
-                $('#pdf-subido').html("");
-                $('#certificado-subido').html("");
+                
                 $("#foto").html("");
-                $("#ficha").html("");
-                $("#certificado").html("");
+                
 
                 
             });
@@ -387,16 +302,11 @@
             //Aquí código inserción
             $(document).on('submit', '#formulario', function(event){
             event.preventDefault();
-            var nombre = $('#nombre').val();
-            var marca = $('#marca').val();
-            var unidad = $('#unidad').val();
-            var tipo = $('#tipo').val();
-            var proveedor = $('#proveedor').val();
-            var pc = $('#pc').val();
-            var pv = $('#pv').val();
+            var articulo = $('#articulo').val();
+            var stock = $('#stock').val();
+            
             var extension = $('#foto').val().split('.').pop().toLowerCase();
-            var extension2 = $('#ficha').val().split('.').pop().toLowerCase();
-            var extension3 = $('#certificado').val().split('.').pop().toLowerCase();
+            
             if(extension != '')
             {
                 if(jQuery.inArray(extension, ['gif','png','jpg','jpeg']) == -1)
@@ -407,27 +317,9 @@
                 }
             }
 
-            if(extension2 != '')
-            {
-                if(jQuery.inArray(extension2, ['pdf']) == -1)
-                {
-                    alert("Fomato inválido");
-                    $('#ficha').val('');
-                    return false;
-                }
-            }
-
-            if(extension3 != '')
-            {
-                if(jQuery.inArray(extension3, ['pdf']) == -1)
-                {
-                    alert("Fomato de imagen inválido");
-                    $('#certificado').val('');
-                    return false;
-                }
-            }
+           
             	
-		    if(nombre != '' && marca != '' && unidad != '' && tipo != '' && pc != '' && pv != '')
+		    if(articulo != '' && stock != '')
                 {
                     $.ajax({
                         url:"crear.php",
@@ -461,29 +353,24 @@
 
             //Funcionalidad de editar
             $(document).on('click', '.editar', function(){		
-            var id_producto = $(this).attr("id");		
+            var id_inv = $(this).attr("id");		
             $.ajax({
                 url:"obtener_registro.php",
                 method:"POST",
-                data:{id_producto:id_producto},
+                data:{id_inv:id_inv},
                 dataType:"json",
                 success:function(data)
                     {
                         
                         //console.log(data);				
                         $('#modalproductos').modal('show');
-                        $('#nombre').val(data.nombre);
-                        $('#marca').val(data.marca);
-                        $('#unidad').val(data.unidad);
-                        $('#tipo').val(data.tipo);
-                        $('#proveedor').val(data.proveedor);
-                        $('#pc').val(data.pc);
-                        $('#pv').val(data.pv);
+                        $('#articulo').val(data.articulo);
+                        $('#stock').val(data.stock);
+                       
                         $('.modal-title').text("Editar Producto");
-                        $('#id_producto').val(id_producto);
+                        $('#id_inv').val(id_inv);
                         $('#imagen-subida').html(data.foto);
-                        $('#pdf-subido').html(data.ficha);
-                        $('#certificado-subido').html(data.certificado);
+                        
                         $('#action').val("Editar");
                         $('#operacion').val("Editar");
                     },
@@ -495,11 +382,11 @@
 
             //Funcionalidad de borrar
             $(document).on('click', '.borrar', function(){
-                var id_producto = $(this).attr("id");
+                var id_inv = $(this).attr("id");
 
                 Swal.fire({
                 title: 'Esta Seguro de Borrar ?',
-                text: "El Registro con el ID = " + id_producto,
+                text: "El Registro con el ID = " + id_inv,
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#72db88',
@@ -511,7 +398,7 @@
                     $.ajax({
                         url:"borrar.php",
                         method:"POST",
-                        data:{id_producto:id_producto},
+                        data:{id_inv:id_inv},
                         success:function(data)
                         {
                             dataTable.ajax.reload();

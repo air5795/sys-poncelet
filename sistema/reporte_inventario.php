@@ -124,15 +124,7 @@ echo "The current date and time are $DateAndTime.";
                                     //$query = mysqli_query($conexion, "SELECT * FROM gastos
                                     //ORDER BY id_gasto DESC;");
 
-                                    $query = mysqli_query($conexion, "SELECT inventario.id_inv, 
-                                    inventario.articulo,
-                                    inventario.stock,
-                                    inventario.categoria_id,
-                                    inventario.foto,
-                                    inventario.fecha_add,
-                                    categoria_i.nombre_categoria
-                            FROM inventario
-                            JOIN categoria_i ON inventario.categoria_id = categoria_i.id_categoria order by inventario.fecha_add ASC;");
+                                    $query = mysqli_query($conexion, "SELECT * FROM inventario order by fecha_add ASC;");
 
 
 
