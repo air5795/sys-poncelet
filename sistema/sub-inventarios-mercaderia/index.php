@@ -96,12 +96,26 @@
                         <th>ID</th>
                         <th width="25%">ARTICULO</th>
                         <th>FECHA REGISTRADA</th>
-                        <th>STOCK</th>
+                        <th width="5%">STOCK</th>
                        
                         
-                        <th>FOTO</th>
+                        <th width="5%">FOTO</th>
                         <th></th>
                         <th></th>
+                    </tr>
+                </thead>
+            </table>
+            <h2>Bitacora de Stock</h2>
+            <table id="datos_stock" class="table table-hover table-striped" style="width:100%" >
+                <thead>
+                    <tr>
+                        <th>ID-BITACORA</th>
+                        <th width="25%">ARTICULO</th>
+                        <th>CANTIDAD CAMBIO</th>
+                        <th>TIPO CAMBIO</th>
+                        <th>MOTIVO</th>
+                        <th>FECHA DE CAMBIO</th>
+                       
                     </tr>
                 </thead>
             </table>
@@ -147,7 +161,14 @@
                         <div class="col-6">
                             <span id="imagen-subida"></span>
                         </div>
-                        
+
+
+
+
+
+
+
+            
                         
                         
 
@@ -161,21 +182,36 @@
 
                     </div>
                     <div class="modal-footer">
+                    
                         <input type="hidden" name="id_inv" id="id_inv">
                         <input type="hidden" name="operacion" id="operacion">
 
                         <input type="reset" value="Limpiar" class="btn btn-secondary"> 
-                        <input type="submit" name="action" id="action" class="btn btn-success" value="Registrar">
+                        <input type="submit" name="action" id="action" class="btn btn-success"  value="Registrar">
+                        <button type="button" class="btn btn-primary" onclick="abrirModalCambioStock()">Actualizar Stock</button>
                         
                     </div>
                     </div>
                     </div>
                 </form>
+
+
+
+
             </div>
+
+            
+
+
+
+
+            
 
 
             
         </div>
+
+        
 
 
 
@@ -203,6 +239,35 @@
                     </div>
                 </div>
 <!-- FINAL Modal para  ver imagenes -->
+
+
+
+
+
+                <!-- Modal para Motivo del Cambio -->
+                <div class="modal fade" id="modalCambioStock" tabindex="-1" aria-labelledby="modalCambioStockLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalCambioStockLabel">Motivo del Cambio de Stock</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="formCambioStock">
+                    <div class="mb-3">
+                        <label for="motivo" class="form-label">Motivo</label>
+                        <input type="text" class="form-control" id="motivo" name="motivo" required>
+                    </div>
+                    <button type="button" class="btn btn-primary" onclick="guardarCambios()">Guardar Cambios</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
                 
 
 <!-- FINAL CONTENIDO--> 
@@ -223,6 +288,14 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
         
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.all.min.js"></script>
+
+
+
+
+
+
+
+
 
 
         <script>
@@ -263,12 +336,49 @@
             });
             
             var dataTable = $('#datos_usuario').DataTable({
-                "pageLength": 25,
+                "pageLength": 8,
                 "processing":true,
                 "serverSide":true,
                 "order":[],
                 "ajax":{
                     url: "obtener_registros.php",
+                    type: "POST"
+                },
+                "columnsDefs":[
+                    {
+                    "targets":[0, 3, 4],
+                    "orderable":false,
+                    },
+                ],
+                "language": {
+                "decimal": "",
+                "emptyTable": "No hay registros",
+                "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
+                "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
+                "infoFiltered": "(Filtrado de _MAX_ total entradas)",
+                "infoPostFix": "",
+                "thousands": ",",
+                "lengthMenu": "Mostrar _MENU_ Entradas",
+                "loadingRecords": "Cargando...",
+                "processing": "Procesando...",
+                "search": "Buscar:",
+                "zeroRecords": "Sin resultados encontrados",
+                "paginate": {
+                    "first": "Primero",
+                    "last": "Ultimo",
+                    "next": "Siguiente",
+                    "previous": "Anterior"
+                }
+            }
+            });
+
+            var dataTable = $('#datos_stock').DataTable({
+                "pageLength": 5,
+                "processing":true,
+                "serverSide":true,
+                "order":[],
+                "ajax":{
+                    url: "obtener_registros2.php",
                     type: "POST"
                 },
                 "columnsDefs":[
@@ -351,34 +461,70 @@
 	        });
 
 
-            //Funcionalidad de editar
-            $(document).on('click', '.editar', function(){		
-            var id_inv = $(this).attr("id");		
+         // Functionality for editing a product
+    $(document).on('click', '.editar', function() {
+        var id_inv = $(this).attr("id");
+        $.ajax({
+            url: "obtener_registro.php",
+            method: "POST",
+            data: { id_inv: id_inv },
+            dataType: "json",
+            success: function(data) {
+                $('#modalproductos').modal('show');
+                $('#articulo').val(data.articulo);
+                $('#stock').val(data.stock);
+                $('.modal-title').text("Editar Producto");
+                $('#id_inv').val(id_inv);
+                $('#imagen-subida').html(data.foto);
+                $('#action').val("Editar");
+                $('#operacion').val("Editar");
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                console.log(textStatus, errorThrown);
+            }
+        });
+    });
+
+    // Open modal for entering change reason
+    window.abrirModalCambioStock = function() {
+        $('#modalCambioStock').modal('show');
+    }
+
+    // Guardar cambios con motivo
+    window.guardarCambios = function() {
+        var motivo = document.getElementById("motivo").value;
+        if (motivo.trim() !== "") {
+            var formData = new FormData(document.getElementById("formulario"));
+            formData.append("motivo", motivo);
+            $('#modalCambioStock').modal('hide');
+
             $.ajax({
-                url:"obtener_registro.php",
-                method:"POST",
-                data:{id_inv:id_inv},
-                dataType:"json",
-                success:function(data)
-                    {
-                        
-                        //console.log(data);				
-                        $('#modalproductos').modal('show');
-                        $('#articulo').val(data.articulo);
-                        $('#stock').val(data.stock);
-                       
-                        $('.modal-title').text("Editar Producto");
-                        $('#id_inv').val(id_inv);
-                        $('#imagen-subida').html(data.foto);
-                        
-                        $('#action').val("Editar");
-                        $('#operacion').val("Editar");
-                    },
-                    error: function(jqXHR, textStatus, errorThrown) {
+                url: "crear.php",
+                method: "POST",
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function(data) {
+                    Swal.fire(
+                        'Exitoso!',
+                        'El registro se actualizó correctamente',
+                        'success'
+                    );
+                    $('#formulario')[0].reset();
+                    $('#modalproductos').modal('hide');
+                    dataTable.ajax.reload();
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
                     console.log(textStatus, errorThrown);
-                    }
-                })
-	        });
+                }
+            });
+        } else {
+            alert("Por favor, ingrese un motivo.");
+        }
+    }
+
+
+
 
             //Funcionalidad de borrar
             $(document).on('click', '.borrar', function(){

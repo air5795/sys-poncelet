@@ -35,11 +35,14 @@
             $imagen = '<a class="btn btn-outline-secondary btn-sm gallery-item boton-w disabled" id=""><i class="fa-solid fa-ban"></i> </a>';
         }
 
-        if ($fila['stock'] == 0) {
-            $stock = '<a class="btn btn-danger w-100" style="text-align:center">'.$fila['stock'].' </a>' ;
+        if ($fila['stock'] >= 10) {
+            $stock = '<a class="btn btn-success btn-sm w-100" style="text-align:center">' . $fila['stock'] . '</a>';
+        } elseif ($fila['stock'] < 10 && $fila['stock'] >= 2) {
+            $stock = '<a class="btn btn-warning btn-sm w-100" style="text-align:center">' . $fila['stock'] . '</a>';
         } else {
-            $stock = '<a class="btn btn-success w-100" style="text-align:center">'.$fila['stock'].' </a>' ;
+            $stock = '<a class="btn btn-danger btn-sm w-100" style="text-align:center">' . $fila['stock'] . '</a>';
         }
+        
 
         
 

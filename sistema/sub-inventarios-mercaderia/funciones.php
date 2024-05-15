@@ -32,3 +32,11 @@
         $resultado = $stmt->fetchAll(); 
         return $stmt->rowCount();       
     }
+
+    function obtener_todos_registros2(){
+        include('conexion.php');
+        $stmt = $conexion->prepare("SELECT * FROM cambio_inventario");
+        $stmt->execute();
+        $resultado = $stmt->fetchAll(); 
+        return $stmt->rowCount();       
+    }
