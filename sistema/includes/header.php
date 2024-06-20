@@ -186,7 +186,7 @@ if (empty($_SESSION['active'])) {
 
                             <?php
                             }
-                        if ($_SESSION['rol'] == 1 or $_SESSION['iduser'] == 29 ) {
+                        if ($_SESSION['rol'] == 1 or $_SESSION['iduser'] == 34 ) {
                             
                         
                         ?>
