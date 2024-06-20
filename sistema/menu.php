@@ -183,7 +183,7 @@ if (empty($_SESSION['active'])) {
 
                             <?php
                             }
-                        if ($_SESSION['rol'] == 1 or $_SESSION['iduser'] == 29 ) {
+                        if ($_SESSION['rol'] == 1 or $_SESSION['iduser'] == 34 ) {
                         ?>
 
 <div class="sb-sidenav-menu-heading " style="color:#ff7a58; font-size: medium;  text-transform: none; background-color: #38383869;" >
