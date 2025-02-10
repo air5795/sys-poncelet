@@ -354,7 +354,7 @@ if (empty($_SESSION['active'])) {
                             ?>
                             
                             <?php
-                        if ($_SESSION['rol'] == 1 or $_SESSION['iduser'] == 12 or $_SESSION['iduser'] == 28 or $_SESSION['iduser'] == 29 or $_SESSION['iduser'] == 30 or $_SESSION['iduser'] == 34 or $_SESSION['iduser'] == 35  ) {
+                        if ($_SESSION['rol'] == 1 or $_SESSION['iduser'] == 12 or $_SESSION['iduser'] == 28 or $_SESSION['iduser'] == 29 or $_SESSION['iduser'] == 30 or $_SESSION['iduser'] == 34 or $_SESSION['iduser'] == 35 or $_SESSION['iduser'] == 36 ) {
                             
                         
                         ?>

@@ -117,7 +117,7 @@ ob_start();
                             </td>
                         </tr>
     <tr>
-        <th colspan="2" style="width:100% ; border-left-color: white; border-right-color: white; text-align:left ;" >Informe : Lic. Jazmin Velasco Diaz</th>
+        <th colspan="2" style="width:100% ; border-left-color: white; border-right-color: white; text-align:left ;" >Informe : Lic. Deyci Eveling Colque Pacha</th>
     </tr>
 
     <tr>
