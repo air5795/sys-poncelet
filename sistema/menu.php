@@ -512,7 +512,58 @@ if (empty($_SESSION['active'])) {
                         ?>
 
 
-                                <div class="sb-sidenav-menu-heading" style="color: #ff7a58; font-size: medium; text-transform: none; background-color: #38383869;"><i class="fa-solid fa-wrench"></i> Constructora</div>
+                                <div class="sb-sidenav-menu-heading" style="color: #ff7a58; font-size: medium; text-transform: none; background-color: #38383869;">
+                                    <i class="fa-solid fa-wrench"></i> Constructora</div>
+
+                                    <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#cajachicacons" aria-expanded="false" aria-controls="collapsePages">
+                                            <div class="sb-nav-link-icon"><i class="fa-solid fa-sack-dollar"></i></div>
+                                            Caja Chica Constructora
+                                            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                                        </a>
+
+                                        <div class="collapse" id="cajachicacons" aria-labelledby="headingTwo" data-bs-parent="#sidenavAccordion">
+                                                        <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
+
+                                                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapseAuth2" aria-expanded="false" aria-controls="pagesCollapseAuth">
+                                                            <div class="sb-nav-link-icon"><i class="fas fa-file-circle-plus"></i></div>
+                                                                CAJAS
+                                                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                                                            </a>
+
+                                                            <div class="collapse" id="pagesCollapseAuth2" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
+                                                                <nav class="sb-sidenav-menu-nested nav">
+                                                                    <a class="nav-link" href="../proyectos_constructora.php">Gestor CAJAS</a>
+                                                                </nav>
+                                                            </div>
+                                                            
+                                                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapseAuth" aria-expanded="false" aria-controls="pagesCollapseAuth">
+                                                            <div class="sb-nav-link-icon"><i class="fas fa-file-circle-plus"></i></div>
+                                                                Ingresos
+                                                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                                                            </a>
+
+                                                            <div class="collapse" id="pagesCollapseAuth" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
+                                                                <nav class="sb-sidenav-menu-nested nav">
+                                                                    <a class="nav-link" href="../ingresos_constructora.php">Gestor Ingresos</a>
+                                                                </nav>
+                                                            </div>
+
+                                                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapse_e" aria-expanded="false" aria-controls="pagesCollapseAuth">
+                                                            <div class="sb-nav-link-icon"><i class="fas fa-file-circle-minus"></i></div>
+                                                                Gastos
+                                                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                                                            </a>
+
+                                                            <div class="collapse" id="pagesCollapse_e" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
+                                                                <nav class="sb-sidenav-menu-nested nav">
+                                                                    <a class="nav-link" href="../gastos_constructora.php">Gestor Gastos</a>
+                                                                    
+                                                                </nav>
+                                                            </div>
+
+                                                        </nav>
+                                                    </div>
+
 
                             <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseexp2" aria-expanded="false" aria-controls="collapsePages">
                                 <div class="sb-nav-link-icon"><i class="fa-solid fa-briefcase"></i></div>

@@ -6,21 +6,63 @@ if (empty($_SESSION['active'])) {
 }
 }
 
+/* // Configuración de suscripción
+$fecha_inicio_suscripcion = "2024-07-19"; // Fecha de inicio de la suscripción
+$monto_mensual = 200; // Monto mensual en Bs
+$meses_pagados = 2; // Número de meses que ya pagó
 
+// Cálculo de deuda
+$fecha_actual = new DateTime(); // Fecha actual
+$fecha_inicio = new DateTime($fecha_inicio_suscripcion); // Fecha de inicio de la suscripción
+$intervalo = $fecha_inicio->diff($fecha_actual);
+$meses_totales = $intervalo->y * 12 + $intervalo->m; // Total de meses desde el inicio
+$deuda = ($meses_totales * $monto_mensual) - ($meses_pagados * $monto_mensual);
+$meses_deuda = $deuda / $monto_mensual; // Cantidad de meses de deuda
+ */
 
 ?>
+
+<!-- <style>
+/* Animación para parpadeo */
+@keyframes parpadeo {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0;
+    }
+}
+
+/* Clase personalizada para alertas parpadeantes */
+.parpadeo {
+    animation: parpadeo 1s infinite;
+    border: 2px solid red; /* Hacerlo más llamativo */
+    box-shadow: 0px 0px 15px red;
+}
+</style> -->
+
 
 <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
             <!-- Navbar Brand-->
             <center><img src="../img/ICONO11.png" alt=""></center> 
             
+          
             
             
-            <!-- Sidebar Toggle-->
-            <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
+            <!-- ADVERTENCIA DE PAGO-->
+<!--             <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
+            <?php if ($meses_deuda > 2): ?>
+    <div class="alert alert-danger parpadeo" style="margin: 10px; text-align: center; font-size:14px; font-weight: bold;">
+        <strong>¡Atención!</strong> Su suscripción tiene un saldo pendiente
+        (<?php echo round($meses_deuda); ?> meses de deuda). Por favor, realice el pago para no sufrir cortes del servicio.
+    </div>
+<?php endif; ?> -->
+
             <!-- Navbar Search-->
             <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
                 <div class="input-group">
+
+                
                      
                      
                     <p class="form-text "  style="color: white;padding: 5px;"><i class="bi bi-person"></i> Usuario : </p> 
@@ -41,6 +83,7 @@ if (empty($_SESSION['active'])) {
             </form>
             <!-- Navbar-->
             <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
+            
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                                 <?php
@@ -247,8 +290,6 @@ if (empty($_SESSION['active'])) {
                                                     <?php
                             }
                         if ($_SESSION['rol'] == 1 or $_SESSION['iduser'] == 35 ) {
-                            
-                        
                         ?>
 
 
@@ -535,7 +576,57 @@ if (empty($_SESSION['active'])) {
                         ?>
 
 
-                                <div class="sb-sidenav-menu-heading" style="color: #ff7a58; font-size: medium; text-transform: none; background-color: #38383869;"><i class="fa-solid fa-wrench"></i> Constructora</div>
+                                <div class="sb-sidenav-menu-heading" style="color: #ff7a58; font-size: medium; text-transform: none; background-color: #38383869;">
+                                    <i class="fa-solid fa-wrench"></i> Constructora</div>
+
+                                    <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#cajachica_constr" aria-expanded="false" aria-controls="collapsePages">
+                                            <div class="sb-nav-link-icon"><i class="fa-solid fa-sack-dollar"></i></div>
+                                            Caja Chica Constructora
+                                            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                                        </a>
+
+                                        <div class="collapse" id="cajachica_constr" aria-labelledby="headingTwo" data-bs-parent="#sidenavAccordion">
+                                                        <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
+
+                                                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapseAuth2" aria-expanded="false" aria-controls="pagesCollapseAuth">
+                                                            <div class="sb-nav-link-icon"><i class="fas fa-file-circle-plus"></i></div>
+                                                                CAJAS
+                                                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                                                            </a>
+
+                                                            <div class="collapse" id="pagesCollapseAuth2" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
+                                                                <nav class="sb-sidenav-menu-nested nav">
+                                                                    <a class="nav-link" href="proyectos_constructora.php">Gestor CAJAS</a>
+                                                                </nav>
+                                                            </div>
+                                                            
+                                                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapseAuth" aria-expanded="false" aria-controls="pagesCollapseAuth">
+                                                            <div class="sb-nav-link-icon"><i class="fas fa-file-circle-plus"></i></div>
+                                                                Ingresos
+                                                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                                                            </a>
+                                                            
+                                                            <div class="collapse" id="pagesCollapseAuth" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
+                                                                <nav class="sb-sidenav-menu-nested nav">
+                                                                    <a class="nav-link" href="ingresos_constructora.php">Gestor Ingresos</a>
+                                                                </nav>
+                                                            </div>
+
+                                                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapse_e" aria-expanded="false" aria-controls="pagesCollapseAuth">
+                                                            <div class="sb-nav-link-icon"><i class="fas fa-file-circle-minus"></i></div>
+                                                                Gastos
+                                                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                                                            </a>
+
+                                                            <div class="collapse" id="pagesCollapse_e" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
+                                                                <nav class="sb-sidenav-menu-nested nav">
+                                                                    <a class="nav-link" href="gastos_constructora.php">Gestor Gastos</a>
+                                                                    
+                                                                </nav>
+                                                            </div>
+
+                                                        </nav>
+                                                    </div>
 
                             <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseexp2" aria-expanded="false" aria-controls="collapsePages">
                                 <div class="sb-nav-link-icon"><i class="fa-solid fa-briefcase"></i></div>
