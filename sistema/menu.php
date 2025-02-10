@@ -117,6 +117,17 @@ if (empty($_SESSION['active'])) {
                             
 
                             <!-- lista de menu 1 -->
+
+                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapses" aria-expanded="false" aria-controls="pagesCollapseError">
+                            <div class="sb-nav-link-icon"><i class="fa-solid fa-wrench"></i></div>
+                                Sistema Mantenimiento
+                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                            </a>
+                            <div class="collapse" id="pagesCollapses" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
+                                <nav class="sb-sidenav-menu-nested nav"> 
+                                    <a class="nav-link" href="../suscripcion.php"> Historial</a> 
+                                </nav>
+                            </div>
                  
                             <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapsedoc" aria-expanded="false" aria-controls="pagesCollapseError">
                             <div class="sb-nav-link-icon"><i class="fas fa-book"></i></div>

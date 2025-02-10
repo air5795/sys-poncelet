@@ -50,8 +50,8 @@ $meses_deuda = $deuda / $monto_mensual; // Cantidad de meses de deuda
             
             
             <!-- ADVERTENCIA DE PAGO-->
-<!--             <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
-            <?php if ($meses_deuda > 2): ?>
+            <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
+<!--             <?php if ($meses_deuda > 2): ?>
     <div class="alert alert-danger parpadeo" style="margin: 10px; text-align: center; font-size:14px; font-weight: bold;">
         <strong>¡Atención!</strong> Su suscripción tiene un saldo pendiente
         (<?php echo round($meses_deuda); ?> meses de deuda). Por favor, realice el pago para no sufrir cortes del servicio.
@@ -160,6 +160,19 @@ $meses_deuda = $deuda / $monto_mensual; // Cantidad de meses de deuda
                             
 
                             <!-- lista de menu 1 -->
+
+                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapses" aria-expanded="false" aria-controls="pagesCollapseError">
+                            <div class="sb-nav-link-icon"><i class="fa-solid fa-wrench"></i></div>
+                                Sistema Mantenimiento
+                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                            </a>
+                            <div class="collapse" id="pagesCollapses" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
+                                <nav class="sb-sidenav-menu-nested nav"> 
+                                    <a class="nav-link" href="suscripcion.php"> Historial</a> 
+                                </nav>
+                            </div>
+
+
                  
                             <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapsedoc" aria-expanded="false" aria-controls="pagesCollapseError">
                             <div class="sb-nav-link-icon"><i class="fas fa-book"></i></div>
@@ -171,6 +184,8 @@ $meses_deuda = $deuda / $monto_mensual; // Cantidad de meses de deuda
                                     <a class="nav-link" href="documentos.php"> Documentos de la empresa</a> 
                                 </nav>
                             </div>
+
+                            
                             <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapserec" aria-expanded="false" aria-controls="pagesCollapseError">
                             <div class="sb-nav-link-icon"><i class="fa-solid fa-receipt"></i></div>
                                 Recibos
@@ -284,6 +299,8 @@ $meses_deuda = $deuda / $monto_mensual; // Cantidad de meses de deuda
 
                                                         </nav>
                                                     </div>
+
+                                                    
 
 
 
