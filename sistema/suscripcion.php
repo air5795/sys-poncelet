@@ -8,6 +8,51 @@
     // Configurar localización en español para mostrar fechas correctamente
     setlocale(LC_TIME, "es_ES.UTF-8", "Spanish_Spain.1252");
 
+    // Función para actualizar estados según fecha actual
+    function actualizarEstadosPagos($conexion) {
+        $fecha_actual = date('Y-m-d');
+        
+        // Actualizar pagos MENSUALES vencidos (de PRÓXIMO a PENDIENTE)
+        $query_mensual = mysqli_query($conexion, "
+            UPDATE suscripcion_sistema 
+            SET estado = 0 
+            WHERE tipo = 'MENSUAL' 
+            AND estado = 2 
+            AND fecha_inicio <= '$fecha_actual'
+        ");
+        
+        // Actualizar pagos ANUALES vencidos (de PRÓXIMO a PENDIENTE)
+        $query_anual = mysqli_query($conexion, "
+            UPDATE suscripcion_sistema 
+            SET estado = 0 
+            WHERE tipo = 'ANUAL' 
+            AND estado = 2 
+            AND fecha_inicio <= '$fecha_actual'
+        ");
+        
+        // Contar registros actualizados
+        $mensuales_actualizados = mysqli_affected_rows($conexion);
+        $query_check = mysqli_query($conexion, "
+            SELECT COUNT(*) as total FROM suscripcion_sistema 
+            WHERE estado = 2 AND fecha_inicio <= '$fecha_actual'
+        ");
+        $restantes = mysqli_fetch_assoc($query_check)['total'];
+        
+        return [
+            'success' => $query_mensual && $query_anual,
+            'mensuales_actualizados' => $mensuales_actualizados,
+            'restantes' => $restantes,
+            'fecha_actualizacion' => $fecha_actual
+        ];
+    }
+
+    // Si se solicita actualización via AJAX
+    if (isset($_GET['actualizar_estados']) && $_GET['actualizar_estados'] == '1') {
+        $resultado = actualizarEstadosPagos($conexion);
+        echo json_encode($resultado);
+        exit;
+    }
+
     // Función para detectar automáticamente el tipo de pago
     function detectarTipoPago($fecha, $tipo_actual) {
         // Si ya tiene tipo definido y no está vacío, lo respetamos
@@ -189,10 +234,11 @@
         .page-header {
             text-align: center;
             margin-bottom: 20px;
-            padding: 15px 0;
+            padding: 15px 20px;
             background: white;
             border-radius: var(--border-radius);
             box-shadow: var(--shadow);
+            position: relative;
         }
 
         .page-title {
@@ -206,6 +252,84 @@
             color: #6c757d;
             font-size: 0.9rem;
             margin: 0;
+        }
+
+        .update-button {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: linear-gradient(135deg, var(--primary-color), #3a6b8a);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 6px rgba(69, 125, 159, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .update-button:hover {
+            background: linear-gradient(135deg, #3a6b8a, var(--primary-color));
+            transform: translateY(-50%) scale(1.05);
+            box-shadow: 0 4px 12px rgba(69, 125, 159, 0.4);
+        }
+
+        .update-button:active {
+            transform: translateY(-50%) scale(0.98);
+        }
+
+        .update-button.loading {
+            opacity: 0.7;
+            pointer-events: none;
+        }
+
+        .update-button.loading .update-icon {
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            padding: 16px 20px;
+            z-index: 1000;
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+            border-left: 4px solid var(--success-color);
+            max-width: 350px;
+        }
+
+        .toast.show {
+            transform: translateX(0);
+        }
+
+        .toast.error {
+            border-left-color: var(--danger-color);
+        }
+
+        .toast-header {
+            font-weight: 600;
+            color: #495057;
+            margin-bottom: 4px;
+        }
+
+        .toast-body {
+            color: #6c757d;
+            font-size: 0.9rem;
         }
 
         .layout-grid {
@@ -621,6 +745,18 @@
                 flex-direction: column;
                 text-align: center;
             }
+
+            .update-button {
+                position: relative;
+                transform: none;
+                margin-top: 10px;
+                align-self: center;
+            }
+
+            .page-header {
+                text-align: center;
+                padding-bottom: 20px;
+            }
         }
     </style>
 </head>
@@ -635,6 +771,12 @@
                 <div class="page-header">
                     <h1 class="page-title">Plan de Pagos - Sistema Poncelet</h1>
                     <p class="page-subtitle">Gestión de Suscripciones</p>
+                    
+                    <!-- Botón de actualización -->
+                    <button class="update-button" onclick="actualizarEstados()" id="updateBtn">
+                        <i class="fas fa-sync-alt update-icon"></i>
+                        Actualizar Estados
+                    </button>
                 </div>
 
                 <!-- Layout en 2 columnas -->
@@ -910,7 +1052,85 @@
         </main>
     </div>
 
+    <!-- Toast de notificación -->
+    <div class="toast" id="toast">
+        <div class="toast-header" id="toastHeader">Actualización Exitosa</div>
+        <div class="toast-body" id="toastBody">Estados actualizados correctamente</div>
+    </div>
+
     <script>
+        // Función para actualizar estados de pagos
+        function actualizarEstados() {
+            const btn = document.getElementById('updateBtn');
+            const icon = btn.querySelector('.update-icon');
+            
+            // Cambiar estado del botón a loading
+            btn.classList.add('loading');
+            btn.innerHTML = '<i class="fas fa-sync-alt update-icon"></i> Actualizando...';
+            
+            // Realizar petición AJAX
+            fetch('?actualizar_estados=1')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Mostrar toast de éxito
+                        mostrarToast(
+                            'Actualización Exitosa', 
+                            `Estados actualizados correctamente. Fecha: ${data.fecha_actualizacion}`,
+                            'success'
+                        );
+                        
+                        // Recargar la página después de 2 segundos para mostrar cambios
+                        setTimeout(() => {
+                            window.location.reload();
+                        }, 2000);
+                    } else {
+                        mostrarToast(
+                            'Error en Actualización', 
+                            'Hubo un problema al actualizar los estados',
+                            'error'
+                        );
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    mostrarToast(
+                        'Error de Conexión', 
+                        'No se pudo conectar al servidor',
+                        'error'
+                    );
+                })
+                .finally(() => {
+                    // Restaurar botón
+                    btn.classList.remove('loading');
+                    btn.innerHTML = '<i class="fas fa-sync-alt update-icon"></i> Actualizar Estados';
+                });
+        }
+
+        // Función para mostrar toast de notificación
+        function mostrarToast(titulo, mensaje, tipo = 'success') {
+            const toast = document.getElementById('toast');
+            const header = document.getElementById('toastHeader');
+            const body = document.getElementById('toastBody');
+            
+            header.textContent = titulo;
+            body.textContent = mensaje;
+            
+            // Cambiar estilo según tipo
+            toast.classList.remove('error');
+            if (tipo === 'error') {
+                toast.classList.add('error');
+            }
+            
+            // Mostrar toast
+            toast.classList.add('show');
+            
+            // Ocultar después de 4 segundos
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 4000);
+        }
+
         // Función para cargar página sin recargar
         function cargarPagina(pagina) {
             const tbody = document.getElementById('historialTableBody');
