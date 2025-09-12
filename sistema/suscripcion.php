@@ -847,11 +847,16 @@
 
                                 <div class="next-payment-content">
                                     <?php while ($data = mysqli_fetch_array($query_proximo)): ?>
+                                        <?php
+                                            // Detectar tipo automáticamente si está vacío
+                                            $tipo_detectado = detectarTipoPago($data['fecha_inicio'], $data['tipo']);
+                                            $monto = $tipo_detectado == 'MENSUAL' ? '100' : '400';
+                                        ?>
                                         <div class="d-flex justify-content-between align-items-center">
                                             <div>
                                                 <strong><?php echo strftime("%d de %B de %Y", strtotime($data['fecha_inicio'])); ?></strong>
                                                 <br>
-                                                <small class="text-muted">Monto: <?php echo (strtoupper($data['tipo']) == 'MENSUAL' ? '100' : '400'); ?> Bs</small>
+                                                <small class="text-muted">Monto: <?php echo $monto; ?> Bs</small>
                                             </div>
                                             <span class="status-badge" style="background: rgba(255, 193, 7, 0.1); color: #856404;">
                                                 <i class="fas fa-clock"></i> Próximo
