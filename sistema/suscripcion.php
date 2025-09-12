@@ -8,10 +8,32 @@
     // Configurar localización en español para mostrar fechas correctamente
     setlocale(LC_TIME, "es_ES.UTF-8", "Spanish_Spain.1252");
 
-    // Paginación
-    $registros_por_pagina = 8;
+    // Paginación AJAX
+    $registros_por_pagina = 6;
     $pagina_actual = isset($_GET['pagina']) ? (int)$_GET['pagina'] : 1;
     $offset = ($pagina_actual - 1) * $registros_por_pagina;
+
+    // Si es una petición AJAX para paginación
+    if (isset($_GET['ajax']) && $_GET['ajax'] == '1') {
+        $query_pagos = mysqli_query($conexion, "SELECT * FROM suscripcion_sistema WHERE estado IN (0,1) ORDER BY fecha_inicio DESC LIMIT $offset, $registros_por_pagina");
+        
+        $html = '';
+        while ($data = mysqli_fetch_array($query_pagos)) {
+            $estado_badge = $data['estado'] == 1 
+                ? '<span class="status-badge status-paid"><i class="fas fa-check"></i></span>'
+                : '<span class="status-badge status-pending"><i class="fas fa-clock"></i></span>';
+            
+            $html .= '<tr>
+                <td>#' . str_pad($data['id'], 3, '0', STR_PAD_LEFT) . '</td>
+                <td>' . strftime("%d/%m/%Y", strtotime($data['fecha_inicio'])) . '</td>
+                <td class="amount-cell">100 Bs</td>
+                <td>' . $estado_badge . '</td>
+            </tr>';
+        }
+        
+        echo $html;
+        exit;
+    }
 
     // Obtener los registros con estado 0 y 1 paginados
     $query_pagos = mysqli_query($conexion, "SELECT * FROM suscripcion_sistema WHERE estado IN (0,1) ORDER BY fecha_inicio DESC LIMIT $offset, $registros_por_pagina");
@@ -29,18 +51,38 @@
     $resultado_pendientes = mysqli_fetch_assoc($query_pendientes);
     $pendientes = $resultado_pendientes['total'];
 
-    // Obtener datos para el gráfico anual
-    $año_actual = date("Y");
-    $meses_año = [];
-    for ($i = 1; $i <= 12; $i++) {
-        $fecha_mes = $año_actual . "-" . str_pad($i, 2, "0", STR_PAD_LEFT) . "-01";
+    // Obtener datos para el calendario (6 meses atrás y 6 adelante del mes actual)
+    $mes_actual = (int)date("n");
+    $año_actual = (int)date("Y");
+    
+    $meses_mostrar = [];
+    for ($i = -6; $i <= 5; $i++) {
+        $mes_calc = $mes_actual + $i;
+        $año_calc = $año_actual;
+        
+        if ($mes_calc <= 0) {
+            $mes_calc += 12;
+            $año_calc--;
+        } elseif ($mes_calc > 12) {
+            $mes_calc -= 12;
+            $año_calc++;
+        }
+        
+        $fecha_mes = $año_calc . "-" . str_pad($mes_calc, 2, "0", STR_PAD_LEFT) . "-01";
         $query_mes = mysqli_query($conexion, "SELECT estado FROM suscripcion_sistema WHERE DATE_FORMAT(fecha_inicio, '%Y-%m') = '" . substr($fecha_mes, 0, 7) . "'");
         
         if ($data_mes = mysqli_fetch_assoc($query_mes)) {
-            $meses_año[$i] = $data_mes['estado'];
+            $estado = $data_mes['estado'];
         } else {
-            $meses_año[$i] = -1; // No existe registro
+            $estado = -1; // No existe registro
         }
+        
+        $meses_mostrar[] = [
+            'numero' => $mes_calc,
+            'año' => $año_calc,
+            'estado' => $estado,
+            'es_actual' => ($mes_calc == $mes_actual && $año_calc == $año_actual)
+        ];
     }
     
     $meses_nombres = [
@@ -68,174 +110,232 @@
             --warning-color: #ffc107;
             --danger-color: #dc3545;
             --light-bg: #f8f9fa;
-            --shadow: 0 2px 10px rgba(0,0,0,0.1);
-            --border-radius: 12px;
+            --shadow: 0 2px 8px rgba(0,0,0,0.08);
+            --border-radius: 8px;
+        }
+
+        body {
+            background: #f5f6fa;
+            font-size: 14px;
         }
 
         .main-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-            background: #fff;
-            min-height: 100vh;
+            padding: 15px;
+            max-width: 100vw;
+            margin: 0;
         }
 
         .page-header {
             text-align: center;
-            margin-bottom: 2rem;
-            padding: 1.5rem 0;
-            border-bottom: 2px solid var(--light-bg);
+            margin-bottom: 20px;
+            padding: 15px 0;
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
         }
 
         .page-title {
             color: var(--primary-color);
-            font-weight: 300;
-            margin-bottom: 0.5rem;
+            font-weight: 600;
+            font-size: 1.6rem;
+            margin-bottom: 5px;
         }
 
         .page-subtitle {
             color: #6c757d;
-            font-size: 1.1rem;
+            font-size: 0.9rem;
             margin: 0;
         }
 
-        .info-cards {
+        .layout-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 2rem;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            height: calc(100vh - 200px);
+        }
+
+        .left-column, .right-column {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        /* Cards compactas */
+        .info-cards {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
         }
 
         .info-card {
-            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-            border: 1px solid #dee2e6;
+            background: white;
             border-radius: var(--border-radius);
-            padding: 1.5rem;
+            padding: 12px 15px;
             box-shadow: var(--shadow);
-            transition: transform 0.2s ease;
-        }
-
-        .info-card:hover {
-            transform: translateY(-2px);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            min-height: 50px;
         }
 
         .info-card-icon {
-            width: 48px;
-            height: 48px;
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
-            margin-bottom: 1rem;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.5rem;
+            font-size: 1rem;
             color: white;
+            flex-shrink: 0;
         }
 
         .info-card-monthly .info-card-icon {
-            background: linear-gradient(135deg, var(--primary-color), #3a6b8a);
+            background: var(--primary-color);
         }
 
         .info-card-annual .info-card-icon {
-            background: linear-gradient(135deg, var(--warning-color), #e0a800);
+            background: var(--warning-color);
+        }
+
+        .info-card-content {
+            flex: 1;
         }
 
         .info-card-title {
             font-weight: 600;
             color: #495057;
-            margin-bottom: 0.5rem;
+            margin: 0 0 2px 0;
+            font-size: 0.9rem;
         }
 
         .info-card-text {
             color: #6c757d;
             margin: 0;
-            line-height: 1.5;
+            font-size: 0.8rem;
+            line-height: 1.3;
         }
 
+        /* Calendario compacto */
         .calendar-section {
-            margin-bottom: 2rem;
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            padding: 15px;
+            flex: 1;
         }
 
         .calendar-header {
             display: flex;
             align-items: center;
-            margin-bottom: 1.5rem;
+            justify-content: space-between;
+            margin-bottom: 15px;
         }
 
         .calendar-title {
             color: #495057;
             font-weight: 600;
             margin: 0;
-            margin-right: 1rem;
+            font-size: 1.1rem;
         }
 
-        .calendar-year {
+        .year-selector {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .year-btn {
             background: var(--primary-color);
             color: white;
-            padding: 0.25rem 0.75rem;
-            border-radius: 20px;
+            border: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .current-year {
+            font-weight: 600;
+            color: var(--primary-color);
             font-size: 0.9rem;
-            font-weight: 500;
         }
 
         .calendar-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
-            gap: 0.75rem;
-            background: white;
-            padding: 1.5rem;
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow);
+            grid-template-columns: repeat(6, 1fr);
+            gap: 8px;
         }
 
         .month-item {
             text-align: center;
-            padding: 1rem 0.5rem;
-            border-radius: 8px;
+            padding: 8px 4px;
+            border-radius: 6px;
             font-weight: 500;
-            font-size: 0.9rem;
+            font-size: 0.75rem;
             transition: all 0.2s ease;
             cursor: pointer;
+            border: 2px solid transparent;
+        }
+
+        .month-current {
+            border: 2px solid #333 !important;
+            font-weight: 700;
         }
 
         .month-paid {
-            background: linear-gradient(135deg, #d4edda, #c3e6cb);
+            background: #d4edda;
             color: var(--success-color);
-            border: 2px solid var(--success-color);
         }
 
         .month-pending {
-            background: linear-gradient(135deg, #f8d7da, #f5c6cb);
+            background: #f8d7da;
             color: var(--danger-color);
-            border: 2px solid var(--danger-color);
         }
 
         .month-upcoming {
-            background: linear-gradient(135deg, #fff3cd, #ffeaa7);
+            background: #fff3cd;
             color: #856404;
-            border: 2px solid var(--warning-color);
         }
 
         .month-no-data {
             background: #f8f9fa;
             color: #6c757d;
-            border: 2px dashed #dee2e6;
         }
 
         .month-item:hover {
             transform: scale(1.05);
         }
 
+        .month-name {
+            font-size: 0.7rem;
+            margin-bottom: 2px;
+        }
+
+        .month-year {
+            font-size: 0.6rem;
+            opacity: 0.7;
+        }
+
+        /* Historial compacto */
         .history-section {
             background: white;
             border-radius: var(--border-radius);
             box-shadow: var(--shadow);
             overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
         }
 
         .history-header {
-            background: linear-gradient(135deg, var(--primary-color), #3a6b8a);
+            background: var(--primary-color);
             color: white;
-            padding: 1.5rem;
+            padding: 12px 15px;
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -244,24 +344,28 @@
         .history-title {
             margin: 0;
             font-weight: 600;
+            font-size: 1rem;
         }
 
         .pending-badge {
             background: rgba(255, 255, 255, 0.2);
             color: white;
-            padding: 0.4rem 0.8rem;
-            border-radius: 20px;
-            font-size: 0.85rem;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.75rem;
             font-weight: 500;
         }
 
         .table-container {
-            padding: 0;
+            flex: 1;
+            overflow-y: auto;
+            max-height: calc(100vh - 400px);
         }
 
         .custom-table {
             margin: 0;
             border: none;
+            font-size: 0.85rem;
         }
 
         .custom-table th {
@@ -269,12 +373,15 @@
             color: #495057;
             font-weight: 600;
             border: none;
-            padding: 1rem;
-            font-size: 0.9rem;
+            padding: 10px 12px;
+            font-size: 0.8rem;
+            position: sticky;
+            top: 0;
+            z-index: 10;
         }
 
         .custom-table td {
-            padding: 1rem;
+            padding: 8px 12px;
             border: none;
             border-bottom: 1px solid #f1f3f4;
             vertical-align: middle;
@@ -285,30 +392,23 @@
         }
 
         .status-badge {
-            padding: 0.4rem 0.8rem;
-            border-radius: 20px;
-            font-size: 0.8rem;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 0.7rem;
             font-weight: 500;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+            display: inline-flex;
+            align-items: center;
+            gap: 3px;
         }
 
         .status-paid {
             background: rgba(40, 167, 69, 0.1);
             color: var(--success-color);
-            border: 1px solid rgba(40, 167, 69, 0.2);
         }
 
         .status-pending {
             background: rgba(220, 53, 69, 0.1);
             color: var(--danger-color);
-            border: 1px solid rgba(220, 53, 69, 0.2);
-        }
-
-        .status-upcoming {
-            background: rgba(255, 193, 7, 0.1);
-            color: #856404;
-            border: 1px solid rgba(255, 193, 7, 0.2);
         }
 
         .amount-cell {
@@ -317,7 +417,7 @@
         }
 
         .pagination-container {
-            padding: 1.5rem;
+            padding: 10px 15px;
             background: #f8f9fa;
             border-top: 1px solid #dee2e6;
         }
@@ -325,33 +425,48 @@
         .custom-pagination {
             margin: 0;
             justify-content: center;
+            gap: 4px;
         }
 
-        .custom-pagination .page-link {
+        .pagination-btn {
             border: none;
+            background: white;
             color: var(--primary-color);
-            padding: 0.5rem 0.75rem;
-            margin: 0 0.125rem;
-            border-radius: 6px;
+            padding: 6px 10px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            cursor: pointer;
             transition: all 0.2s ease;
         }
 
-        .custom-pagination .page-link:hover {
+        .pagination-btn:hover {
             background: rgba(69, 125, 159, 0.1);
-            color: var(--primary-color);
         }
 
-        .custom-pagination .page-item.active .page-link {
+        .pagination-btn.active {
             background: var(--primary-color);
             color: white;
-            box-shadow: 0 2px 4px rgba(69, 125, 159, 0.3);
         }
 
-        .alert-custom {
-            border: none;
-            border-radius: var(--border-radius);
-            padding: 1.5rem;
-            box-shadow: var(--shadow);
+        .pagination-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .loading {
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        @media (max-width: 1200px) {
+            .layout-grid {
+                grid-template-columns: 1fr;
+                height: auto;
+            }
+            
+            .calendar-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
         }
 
         @media (max-width: 768px) {
@@ -359,14 +474,12 @@
                 grid-template-columns: repeat(3, 1fr);
             }
             
-            .info-cards {
-                grid-template-columns: 1fr;
+            .layout-grid {
+                gap: 10px;
             }
             
-            .history-header {
-                flex-direction: column;
-                text-align: center;
-                gap: 1rem;
+            .main-container {
+                padding: 10px;
             }
         }
     </style>
@@ -378,248 +491,261 @@
     <div id="layoutSidenav_content">
         <main>
             <div class="main-container">
-                <!-- Encabezado de la página -->
+                <!-- Encabezado compacto -->
                 <div class="page-header">
-                    <h1 class="page-title">Plan de Pagos Mensuales</h1>
-                    <p class="page-subtitle">Sistema Poncelet - Gestión de Suscripciones</p>
+                    <h1 class="page-title">Plan de Pagos - Sistema Poncelet</h1>
+                    <p class="page-subtitle">Gestión de Suscripciones</p>
                 </div>
 
-                <!-- Cards informativos -->
-                <div class="info-cards">
-                    <div class="info-card info-card-monthly">
-                        <div class="info-card-icon">
-                            <i class="fas fa-calendar-check"></i>
-                        </div>
-                        <h5 class="info-card-title">Pago Mensual</h5>
-                        <p class="info-card-text">
-                            <strong>Mantenimiento del Sistema</strong><br>
-                            Monto: <strong>100 Bs</strong> cada mes<br>
-                            Incluye soporte técnico y actualizaciones
-                        </p>
-                    </div>
-
-                    <div class="info-card info-card-annual">
-                        <div class="info-card-icon">
-                            <i class="fas fa-server"></i>
-                        </div>
-                        <h5 class="info-card-title">Pago Anual</h5>
-                        <p class="info-card-text">
-                            <strong>Hosting y Dominio</strong><br>
-                            Cada <strong>10 de Noviembre</strong><br>
-                            Renovación de servicios de hosting
-                        </p>
-                    </div>
-                </div>
-
-                <!-- Calendario anual -->
-                <div class="calendar-section">
-                    <div class="calendar-header">
-                        <h4 class="calendar-title">Estado de Pagos</h4>
-                        <span class="calendar-year"><?php echo $año_actual; ?></span>
-                    </div>
-                    
-                    <div class="calendar-grid">
-                        <?php foreach ($meses_nombres as $num_mes => $nombre_mes): ?>
-                            <?php 
-                                $estado = $meses_año[$num_mes];
-                                $clase = '';
-                                $icono = '';
-                                $tooltip = '';
-                                
-                                switch ($estado) {
-                                    case 1:
-                                        $clase = 'month-paid';
-                                        $icono = '<i class="fas fa-check-circle"></i>';
-                                        $tooltip = 'Pagado';
-                                        break;
-                                    case 0:
-                                        $clase = 'month-pending';
-                                        $icono = '<i class="fas fa-exclamation-circle"></i>';
-                                        $tooltip = 'Pendiente';
-                                        break;
-                                    case 2:
-                                        $clase = 'month-upcoming';
-                                        $icono = '<i class="fas fa-clock"></i>';
-                                        $tooltip = 'Próximo pago';
-                                        break;
-                                    default:
-                                        $clase = 'month-no-data';
-                                        $icono = '<i class="fas fa-minus"></i>';
-                                        $tooltip = 'Sin registro';
-                                        break;
-                                }
-                            ?>
-                            <div class="month-item <?php echo $clase; ?>" title="<?php echo $nombre_mes . ' - ' . $tooltip; ?>">
-                                <div style="margin-bottom: 0.5rem;"><?php echo $icono; ?></div>
-                                <div><?php echo $nombre_mes; ?></div>
-                            </div>
-                        <?php endforeach; ?>
-                    </div>
-                </div>
-
-                <!-- Historial de pagos -->
-                <div class="history-section">
-                    <div class="history-header">
-                        <h4 class="history-title">
-                            <i class="fas fa-history me-2"></i>
-                            Historial de Pagos
-                        </h4>
-                        <?php if ($pendientes > 0): ?>
-                            <div class="pending-badge">
-                                <i class="fas fa-exclamation-triangle me-1"></i>
-                                <?php echo $pendientes; ?> pendiente<?php echo $pendientes > 1 ? 's' : ''; ?>
-                            </div>
-                        <?php endif; ?>
-                    </div>
-
-                    <div class="table-container">
-                        <?php if (mysqli_num_rows($query_pagos) > 0): ?>
-                            <table class="table custom-table">
-                                <thead>
-                                    <tr>
-                                        <th width="10%">ID</th>
-                                        <th width="30%">Fecha de Pago</th>
-                                        <th width="20%">Monto</th>
-                                        <th width="25%">Estado</th>
-                                        <th width="15%">Acciones</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <?php while ($data = mysqli_fetch_array($query_pagos)): ?>
-                                        <tr>
-                                            <td class="amount-cell">#<?php echo str_pad($data['id'], 3, '0', STR_PAD_LEFT); ?></td>
-                                            <td>
-                                                <i class="fas fa-calendar-alt text-muted me-2"></i>
-                                                <?php echo strftime("%d de %B de %Y", strtotime($data['fecha_inicio'])); ?>
-                                            </td>
-                                            <td class="amount-cell">
-                                                <i class="fas fa-coins me-1"></i>
-                                                100 Bs
-                                            </td>
-                                            <td>
-                                                <?php if ($data['estado'] == 1): ?>
-                                                    <span class="status-badge status-paid">
-                                                        <i class="fas fa-check me-1"></i>Pagado
-                                                    </span>
-                                                <?php else: ?>
-                                                    <span class="status-badge status-pending">
-                                                        <i class="fas fa-clock me-1"></i>Pendiente
-                                                    </span>
-                                                <?php endif; ?>
-                                            </td>
-                                            <td>
-                                                <button class="btn btn-sm btn-outline-primary" onclick="verDetalle(<?php echo $data['id']; ?>)">
-                                                    <i class="fas fa-eye"></i>
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    <?php endwhile; ?>
-                                </tbody>
-                            </table>
-
-                            <!-- Paginación -->
-                            <div class="pagination-container">
-                                <nav>
-                                    <ul class="pagination custom-pagination">
-                                        <?php for ($i = 1; $i <= $total_paginas; $i++): ?>
-                                            <li class="page-item <?php if ($i == $pagina_actual) echo 'active'; ?>">
-                                                <a class="page-link" href="?pagina=<?php echo $i; ?>"><?php echo $i; ?></a>
-                                            </li>
-                                        <?php endfor; ?>
-                                    </ul>
-                                </nav>
-                            </div>
-                        <?php else: ?>
-                            <div class="p-4 text-center">
-                                <div class="alert alert-custom alert-info">
-                                    <i class="fas fa-info-circle me-2"></i>
-                                    No hay registros de suscripciones.
+                <!-- Layout en 2 columnas -->
+                <div class="layout-grid">
+                    <!-- Columna Izquierda -->
+                    <div class="left-column">
+                        <!-- Cards informativas compactas -->
+                        <div class="info-cards">
+                            <div class="info-card info-card-monthly">
+                                <div class="info-card-icon">
+                                    <i class="fas fa-calendar-check"></i>
+                                </div>
+                                <div class="info-card-content">
+                                    <h6 class="info-card-title">Pago Mensual - 100 Bs</h6>
+                                    <p class="info-card-text">Mantenimiento del sistema y soporte técnico</p>
                                 </div>
                             </div>
-                        <?php endif; ?>
-                    </div>
-                </div>
 
-                <!-- Próximo pago -->
-                <?php if (mysqli_num_rows($query_proximo) > 0): ?>
-                    <div class="mt-4">
+                            <div class="info-card info-card-annual">
+                                <div class="info-card-icon">
+                                    <i class="fas fa-server"></i>
+                                </div>
+                                <div class="info-card-content">
+                                    <h6 class="info-card-title">Pago Anual - 10 Nov</h6>
+                                    <p class="info-card-text">Hosting y dominio del sistema</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Calendario de estados -->
+                        <div class="calendar-section">
+                            <div class="calendar-header">
+                                <h5 class="calendar-title">Estado de Pagos</h5>
+                                <div class="year-selector">
+                                    <button class="year-btn" onclick="cambiarPeriodo(-1)">
+                                        <i class="fas fa-chevron-left"></i>
+                                    </button>
+                                    <span class="current-year" id="currentPeriod">
+                                        <?php echo date('M Y', strtotime('-6 months')) . ' - ' . date('M Y', strtotime('+5 months')); ?>
+                                    </span>
+                                    <button class="year-btn" onclick="cambiarPeriodo(1)">
+                                        <i class="fas fa-chevron-right"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="calendar-grid">
+                                <?php foreach ($meses_mostrar as $mes): ?>
+                                    <?php 
+                                        $estado = $mes['estado'];
+                                        $clase = '';
+                                        $icono = '';
+                                        $tooltip = '';
+                                        
+                                        switch ($estado) {
+                                            case 1:
+                                                $clase = 'month-paid';
+                                                $icono = '<i class="fas fa-check"></i>';
+                                                $tooltip = 'Pagado';
+                                                break;
+                                            case 0:
+                                                $clase = 'month-pending';
+                                                $icono = '<i class="fas fa-times"></i>';
+                                                $tooltip = 'Pendiente';
+                                                break;
+                                            case 2:
+                                                $clase = 'month-upcoming';
+                                                $icono = '<i class="fas fa-clock"></i>';
+                                                $tooltip = 'Próximo';
+                                                break;
+                                            default:
+                                                $clase = 'month-no-data';
+                                                $icono = '<i class="fas fa-minus"></i>';
+                                                $tooltip = 'Sin datos';
+                                                break;
+                                        }
+                                        
+                                        if ($mes['es_actual']) {
+                                            $clase .= ' month-current';
+                                        }
+                                    ?>
+                                    <div class="month-item <?php echo $clase; ?>" title="<?php echo $meses_nombres[$mes['numero']] . ' ' . $mes['año'] . ' - ' . $tooltip; ?>">
+                                        <div class="month-name"><?php echo $meses_nombres[$mes['numero']]; ?></div>
+                                        <div class="month-year"><?php echo $mes['año']; ?></div>
+                                        <div><?php echo $icono; ?></div>
+                                    </div>
+                                <?php endforeach; ?>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Columna Derecha -->
+                    <div class="right-column">
+                        <!-- Historial de pagos -->
                         <div class="history-section">
                             <div class="history-header">
-                                <h4 class="history-title">
-                                    <i class="fas fa-calendar-plus me-2"></i>
-                                    Próximo Pago
-                                </h4>
+                                <h5 class="history-title">
+                                    <i class="fas fa-history me-2"></i>
+                                    Historial de Pagos
+                                </h5>
+                                <?php if ($pendientes > 0): ?>
+                                    <div class="pending-badge">
+                                        <i class="fas fa-exclamation-triangle me-1"></i>
+                                        <?php echo $pendientes; ?> pendiente<?php echo $pendientes > 1 ? 's' : ''; ?>
+                                    </div>
+                                <?php endif; ?>
                             </div>
 
                             <div class="table-container">
                                 <table class="table custom-table">
                                     <thead>
                                         <tr>
-                                            <th width="10%">ID</th>
-                                            <th width="30%">Fecha de Pago</th>
-                                            <th width="20%">Monto</th>
-                                            <th width="40%">Estado</th>
+                                            <th width="15%">ID</th>
+                                            <th width="35%">Fecha</th>
+                                            <th width="25%">Monto</th>
+                                            <th width="25%">Estado</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
-                                        <?php while ($data = mysqli_fetch_array($query_proximo)): ?>
+                                    <tbody id="historialTableBody">
+                                        <?php while ($data = mysqli_fetch_array($query_pagos)): ?>
                                             <tr>
-                                                <td class="amount-cell">#<?php echo str_pad($data['id'], 3, '0', STR_PAD_LEFT); ?></td>
+                                                <td>#<?php echo str_pad($data['id'], 3, '0', STR_PAD_LEFT); ?></td>
+                                                <td><?php echo strftime("%d/%m/%Y", strtotime($data['fecha_inicio'])); ?></td>
+                                                <td class="amount-cell">100 Bs</td>
                                                 <td>
-                                                    <i class="fas fa-calendar-alt text-muted me-2"></i>
-                                                    <?php echo strftime("%d de %B de %Y", strtotime($data['fecha_inicio'])); ?>
-                                                </td>
-                                                <td class="amount-cell">
-                                                    <i class="fas fa-coins me-1"></i>
-                                                    100 Bs
-                                                </td>
-                                                <td>
-                                                    <span class="status-badge status-upcoming">
-                                                        <i class="fas fa-clock me-1"></i>Próximo a pagar
-                                                    </span>
+                                                    <?php if ($data['estado'] == 1): ?>
+                                                        <span class="status-badge status-paid">
+                                                            <i class="fas fa-check"></i> Pagado
+                                                        </span>
+                                                    <?php else: ?>
+                                                        <span class="status-badge status-pending">
+                                                            <i class="fas fa-clock"></i> Pendiente
+                                                        </span>
+                                                    <?php endif; ?>
                                                 </td>
                                             </tr>
                                         <?php endwhile; ?>
                                     </tbody>
                                 </table>
                             </div>
+
+                            <!-- Paginación AJAX -->
+                            <div class="pagination-container">
+                                <div class="custom-pagination" id="paginationContainer">
+                                    <?php if ($total_paginas > 1): ?>
+                                        <button class="pagination-btn" onclick="cargarPagina(<?php echo max(1, $pagina_actual-1); ?>)" <?php echo $pagina_actual == 1 ? 'disabled' : ''; ?>>
+                                            <i class="fas fa-chevron-left"></i>
+                                        </button>
+                                        
+                                        <?php for ($i = 1; $i <= $total_paginas; $i++): ?>
+                                            <button class="pagination-btn <?php echo $i == $pagina_actual ? 'active' : ''; ?>" onclick="cargarPagina(<?php echo $i; ?>)">
+                                                <?php echo $i; ?>
+                                            </button>
+                                        <?php endfor; ?>
+                                        
+                                        <button class="pagination-btn" onclick="cargarPagina(<?php echo min($total_paginas, $pagina_actual+1); ?>)" <?php echo $pagina_actual == $total_paginas ? 'disabled' : ''; ?>>
+                                            <i class="fas fa-chevron-right"></i>
+                                        </button>
+                                    <?php endif; ?>
+                                </div>
+                            </div>
                         </div>
+
+                        <!-- Próximo pago (si existe) -->
+                        <?php if (mysqli_num_rows($query_proximo) > 0): ?>
+                            <div class="history-section" style="max-height: 150px;">
+                                <div class="history-header">
+                                    <h5 class="history-title">
+                                        <i class="fas fa-calendar-plus me-2"></i>
+                                        Próximo Pago
+                                    </h5>
+                                </div>
+
+                                <div style="padding: 15px;">
+                                    <?php while ($data = mysqli_fetch_array($query_proximo)): ?>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div>
+                                                <strong><?php echo strftime("%d de %B de %Y", strtotime($data['fecha_inicio'])); ?></strong>
+                                                <br>
+                                                <small class="text-muted">Monto: 100 Bs</small>
+                                            </div>
+                                            <span class="status-badge" style="background: rgba(255, 193, 7, 0.1); color: #856404;">
+                                                <i class="fas fa-clock"></i> Próximo
+                                            </span>
+                                        </div>
+                                    <?php endwhile; ?>
+                                </div>
+                            </div>
+                        <?php endif; ?>
                     </div>
-                <?php endif; ?>
+                </div>
             </div>
         </main>
     </div>
 
     <script>
-        function verDetalle(id) {
-            // Aquí puedes agregar la lógica para ver más detalles del pago
-            alert('Ver detalles del pago ID: ' + id);
+        // Función para cargar página sin recargar
+        function cargarPagina(pagina) {
+            const tbody = document.getElementById('historialTableBody');
+            const container = document.querySelector('.history-section');
+            
+            // Agregar clase de carga
+            container.classList.add('loading');
+            
+            // Realizar petición AJAX
+            fetch(`?ajax=1&pagina=${pagina}`)
+                .then(response => response.text())
+                .then(data => {
+                    tbody.innerHTML = data;
+                    
+                    // Actualizar paginación
+                    actualizarPaginacion(pagina);
+                    
+                    // Quitar clase de carga
+                    container.classList.remove('loading');
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    container.classList.remove('loading');
+                });
         }
 
-        // Animación suave para elementos al cargar
+        // Función para actualizar la paginación
+        function actualizarPaginacion(paginaActual) {
+            const buttons = document.querySelectorAll('.pagination-btn');
+            buttons.forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.textContent == paginaActual) {
+                    btn.classList.add('active');
+                }
+            });
+        }
+
+        // Función para cambiar período del calendario (futura implementación)
+        function cambiarPeriodo(direccion) {
+            // Aquí puedes implementar la lógica para cambiar el período del calendario
+            console.log('Cambiar período:', direccion);
+        }
+
+        // Animación al cargar
         document.addEventListener('DOMContentLoaded', function() {
-            const cards = document.querySelectorAll('.info-card, .calendar-grid, .history-section');
-            cards.forEach((card, index) => {
-                card.style.opacity = '0';
-                card.style.transform = 'translateY(20px)';
+            const elements = document.querySelectorAll('.info-card, .calendar-section, .history-section');
+            elements.forEach((element, index) => {
+                element.style.opacity = '0';
+                element.style.transform = 'translateY(20px)';
                 
                 setTimeout(() => {
-                    card.style.transition = 'all 0.5s ease';
-                    card.style.opacity = '1';
-                    card.style.transform = 'translateY(0)';
-                }, index * 150);
-            });
-
-            // Tooltips para el calendario
-            const monthItems = document.querySelectorAll('.month-item');
-            monthItems.forEach(item => {
-                item.addEventListener('mouseenter', function() {
-                    this.style.transform = 'scale(1.05)';
-                });
-                
-                item.addEventListener('mouseleave', function() {
-                    this.style.transform = 'scale(1)';
-                });
+                    element.style.transition = 'all 0.4s ease';
+                    element.style.opacity = '1';
+                    element.style.transform = 'translateY(0)';
+                }, index * 100);
             });
         });
     </script>
