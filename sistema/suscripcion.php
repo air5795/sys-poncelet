@@ -20,13 +20,18 @@
         $html = '';
         while ($data = mysqli_fetch_array($query_pagos)) {
             $estado_badge = $data['estado'] == 1 
-                ? '<span class="status-badge status-paid"><i class="fas fa-check"></i></span>'
-                : '<span class="status-badge status-pending"><i class="fas fa-clock"></i></span>';
+                ? '<span class="status-badge status-paid"><i class="fas fa-check"></i> Pagado</span>'
+                : '<span class="status-badge status-pending"><i class="fas fa-clock"></i> Pendiente</span>';
+            
+            $tipo_badge = strtoupper($data['tipo']) == 'MENSUAL' 
+                ? '<span class="tipo-badge tipo-mensual">MENSUAL</span>'
+                : '<span class="tipo-badge tipo-anual">ANUAL</span>';
             
             $html .= '<tr>
                 <td>#' . str_pad($data['id'], 3, '0', STR_PAD_LEFT) . '</td>
                 <td>' . strftime("%d/%m/%Y", strtotime($data['fecha_inicio'])) . '</td>
-                <td class="amount-cell">100 Bs</td>
+                <td class="amount-cell">' . (strtoupper($data['tipo']) == 'MENSUAL' ? '100' : '400') . ' Bs</td>
+                <td>' . $tipo_badge . '</td>
                 <td>' . $estado_badge . '</td>
             </tr>';
         }
@@ -46,12 +51,16 @@
     // Obtener solo el registro del próximo mes con estado 2
     $query_proximo = mysqli_query($conexion, "SELECT * FROM suscripcion_sistema WHERE estado = 2 AND fecha_inicio >= '$fecha_actual' ORDER BY fecha_inicio ASC LIMIT 1");
     
-    // Contar la cantidad de pagos pendientes
+    // Contar la cantidad de pagos pendientes y total de pagos realizados
     $query_pendientes = mysqli_query($conexion, "SELECT COUNT(*) as total FROM suscripcion_sistema WHERE estado = 0");
     $resultado_pendientes = mysqli_fetch_assoc($query_pendientes);
     $pendientes = $resultado_pendientes['total'];
+    
+    $query_pagados = mysqli_query($conexion, "SELECT COUNT(*) as total FROM suscripcion_sistema WHERE estado = 1");
+    $resultado_pagados = mysqli_fetch_assoc($query_pagados);
+    $pagados = $resultado_pagados['total'];
 
-    // Obtener datos para el calendario (6 meses atrás y 6 adelante del mes actual)
+    // Obtener datos para el calendario mensual (6 meses atrás y 6 adelante del mes actual)
     $mes_actual = (int)date("n");
     $año_actual = (int)date("Y");
     
@@ -69,7 +78,7 @@
         }
         
         $fecha_mes = $año_calc . "-" . str_pad($mes_calc, 2, "0", STR_PAD_LEFT) . "-01";
-        $query_mes = mysqli_query($conexion, "SELECT estado FROM suscripcion_sistema WHERE DATE_FORMAT(fecha_inicio, '%Y-%m') = '" . substr($fecha_mes, 0, 7) . "'");
+        $query_mes = mysqli_query($conexion, "SELECT estado FROM suscripcion_sistema WHERE DATE_FORMAT(fecha_inicio, '%Y-%m') = '" . substr($fecha_mes, 0, 7) . "' AND tipo = 'MENSUAL'");
         
         if ($data_mes = mysqli_fetch_assoc($query_mes)) {
             $estado = $data_mes['estado'];
@@ -82,6 +91,25 @@
             'año' => $año_calc,
             'estado' => $estado,
             'es_actual' => ($mes_calc == $mes_actual && $año_calc == $año_actual)
+        ];
+    }
+    
+    // Obtener datos para el calendario de años (3 años atrás y 3 adelante)
+    $años_mostrar = [];
+    for ($i = -3; $i <= 2; $i++) {
+        $año_calc = $año_actual + $i;
+        $query_año = mysqli_query($conexion, "SELECT estado FROM suscripcion_sistema WHERE YEAR(fecha_inicio) = $año_calc AND tipo = 'ANUAL'");
+        
+        if ($data_año = mysqli_fetch_assoc($query_año)) {
+            $estado = $data_año['estado'];
+        } else {
+            $estado = -1; // No existe registro
+        }
+        
+        $años_mostrar[] = [
+            'año' => $año_calc,
+            'estado' => $estado,
+            'es_actual' => ($año_calc == $año_actual)
         ];
     }
     
@@ -217,12 +245,16 @@
         }
 
         /* Calendario compacto */
-        .calendar-section {
+        .calendar-section, .calendar-section-años {
             background: white;
             border-radius: var(--border-radius);
             box-shadow: var(--shadow);
             padding: 15px;
             flex: 1;
+        }
+
+        .calendar-section-años {
+            margin-top: 15px;
         }
 
         .calendar-header {
@@ -271,7 +303,13 @@
             gap: 8px;
         }
 
-        .month-item {
+        .calendar-grid-años {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 8px;
+        }
+
+        .month-item, .year-item {
             text-align: center;
             padding: 8px 4px;
             border-radius: 6px;
@@ -282,7 +320,12 @@
             border: 2px solid transparent;
         }
 
-        .month-current {
+        .year-item {
+            padding: 12px 8px;
+            font-size: 0.8rem;
+        }
+
+        .month-current, .year-current {
             border: 2px solid #333 !important;
             font-weight: 700;
         }
@@ -307,7 +350,7 @@
             color: #6c757d;
         }
 
-        .month-item:hover {
+        .month-item:hover, .year-item:hover {
             transform: scale(1.05);
         }
 
@@ -339,6 +382,8 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 8px;
         }
 
         .history-title {
@@ -348,12 +393,22 @@
         }
 
         .pending-badge {
-            background: rgba(255, 255, 255, 0.2);
+            background: rgba(220, 53, 69, 0.9);
             color: white;
             padding: 4px 8px;
             border-radius: 12px;
             font-size: 0.75rem;
             font-weight: 500;
+        }
+
+        .paid-badge {
+            background: rgba(40, 167, 69, 0.9);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            margin-left: 8px;
         }
 
         .table-container {
@@ -366,6 +421,7 @@
             margin: 0;
             border: none;
             font-size: 0.85rem;
+            text-align: center;
         }
 
         .custom-table th {
@@ -378,6 +434,7 @@
             position: sticky;
             top: 0;
             z-index: 10;
+            text-align: center;
         }
 
         .custom-table td {
@@ -385,6 +442,7 @@
             border: none;
             border-bottom: 1px solid #f1f3f4;
             vertical-align: middle;
+            text-align: center;
         }
 
         .custom-table tbody tr:hover {
@@ -414,6 +472,26 @@
         .amount-cell {
             font-weight: 600;
             color: var(--primary-color);
+        }
+
+        .tipo-badge {
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 3px;
+        }
+
+        .tipo-mensual {
+            background: rgba(0, 123, 255, 0.1);
+            color: #0056b3;
+        }
+
+        .tipo-anual {
+            background: rgba(255, 193, 7, 0.1);
+            color: #856404;
         }
 
         .pagination-container {
@@ -453,6 +531,30 @@
             cursor: not-allowed;
         }
 
+        /* Sección de próximo pago con color de alerta */
+        .next-payment-section {
+            background: #fff8e1;
+            border: 1px solid #ffcc02;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            max-height: 150px;
+        }
+
+        .next-payment-header {
+            background: linear-gradient(135deg, #ffb300, #ff8f00);
+            color: white;
+            padding: 12px 15px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .next-payment-content {
+            padding: 15px;
+            background: #fff8e1;
+        }
+
         .loading {
             opacity: 0.6;
             pointer-events: none;
@@ -464,13 +566,13 @@
                 height: auto;
             }
             
-            .calendar-grid {
+            .calendar-grid, .calendar-grid-años {
                 grid-template-columns: repeat(4, 1fr);
             }
         }
 
         @media (max-width: 768px) {
-            .calendar-grid {
+            .calendar-grid, .calendar-grid-años {
                 grid-template-columns: repeat(3, 1fr);
             }
             
@@ -480,6 +582,11 @@
             
             .main-container {
                 padding: 10px;
+            }
+
+            .history-header {
+                flex-direction: column;
+                text-align: center;
             }
         }
     </style>
@@ -518,16 +625,16 @@
                                     <i class="fas fa-server"></i>
                                 </div>
                                 <div class="info-card-content">
-                                    <h6 class="info-card-title">Pago Anual - 10 Nov</h6>
-                                    <p class="info-card-text">Hosting y dominio del sistema</p>
+                                    <h6 class="info-card-title">Pago Anual - 400 Bs</h6>
+                                    <p class="info-card-text">Hosting y dominio - 10 de Noviembre</p>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Calendario de estados -->
+                        <!-- Calendario de estados mensuales -->
                         <div class="calendar-section">
                             <div class="calendar-header">
-                                <h5 class="calendar-title">Estado de Pagos</h5>
+                                <h5 class="calendar-title">Estado de Pagos Mensuales</h5>
                                 <div class="year-selector">
                                     <button class="year-btn" onclick="cambiarPeriodo(-1)">
                                         <i class="fas fa-chevron-left"></i>
@@ -584,6 +691,60 @@
                                 <?php endforeach; ?>
                             </div>
                         </div>
+
+                        <!-- Calendario de estados anuales -->
+                        <div class="calendar-section-años">
+                            <div class="calendar-header">
+                                <h5 class="calendar-title">Estado de Pagos Anuales</h5>
+                                <div class="year-selector">
+                                    <span class="current-year">
+                                        <?php echo ($año_actual - 3) . ' - ' . ($año_actual + 2); ?>
+                                    </span>
+                                </div>
+                            </div>
+                            
+                            <div class="calendar-grid-años">
+                                <?php foreach ($años_mostrar as $año): ?>
+                                    <?php 
+                                        $estado = $año['estado'];
+                                        $clase = '';
+                                        $icono = '';
+                                        $tooltip = '';
+                                        
+                                        switch ($estado) {
+                                            case 1:
+                                                $clase = 'month-paid';
+                                                $icono = '<i class="fas fa-check"></i>';
+                                                $tooltip = 'Pagado';
+                                                break;
+                                            case 0:
+                                                $clase = 'month-pending';
+                                                $icono = '<i class="fas fa-times"></i>';
+                                                $tooltip = 'Pendiente';
+                                                break;
+                                            case 2:
+                                                $clase = 'month-upcoming';
+                                                $icono = '<i class="fas fa-clock"></i>';
+                                                $tooltip = 'Próximo';
+                                                break;
+                                            default:
+                                                $clase = 'month-no-data';
+                                                $icono = '<i class="fas fa-minus"></i>';
+                                                $tooltip = 'Sin datos';
+                                                break;
+                                        }
+                                        
+                                        if ($año['es_actual']) {
+                                            $clase .= ' year-current';
+                                        }
+                                    ?>
+                                    <div class="year-item <?php echo $clase; ?>" title="<?php echo $año['año'] . ' - ' . $tooltip; ?>">
+                                        <div style="margin-bottom: 4px;"><?php echo $icono; ?></div>
+                                        <div><?php echo $año['año']; ?></div>
+                                    </div>
+                                <?php endforeach; ?>
+                            </div>
+                        </div>
                     </div>
 
                     <!-- Columna Derecha -->
@@ -595,21 +756,30 @@
                                     <i class="fas fa-history me-2"></i>
                                     Historial de Pagos
                                 </h5>
-                                <?php if ($pendientes > 0): ?>
-                                    <div class="pending-badge">
-                                        <i class="fas fa-exclamation-triangle me-1"></i>
-                                        <?php echo $pendientes; ?> pendiente<?php echo $pendientes > 1 ? 's' : ''; ?>
-                                    </div>
-                                <?php endif; ?>
+                                <div style="display: flex; gap: 8px; align-items: center;">
+                                    <?php if ($pendientes > 0): ?>
+                                        <div class="pending-badge">
+                                            <i class="fas fa-exclamation-triangle me-1"></i>
+                                            <?php echo $pendientes; ?> pendiente<?php echo $pendientes > 1 ? 's' : ''; ?>
+                                        </div>
+                                    <?php endif; ?>
+                                    <?php if ($pagados > 0): ?>
+                                        <div class="paid-badge">
+                                            <i class="fas fa-check me-1"></i>
+                                            <?php echo $pagados; ?> realizado<?php echo $pagados > 1 ? 's' : ''; ?>
+                                        </div>
+                                    <?php endif; ?>
+                                </div>
                             </div>
 
                             <div class="table-container">
                                 <table class="table custom-table">
                                     <thead>
                                         <tr>
-                                            <th width="15%">ID</th>
-                                            <th width="35%">Fecha</th>
-                                            <th width="25%">Monto</th>
+                                            <th width="12%">ID</th>
+                                            <th width="25%">Fecha</th>
+                                            <th width="18%">Monto</th>
+                                            <th width="20%">Tipo</th>
                                             <th width="25%">Estado</th>
                                         </tr>
                                     </thead>
@@ -618,7 +788,14 @@
                                             <tr>
                                                 <td>#<?php echo str_pad($data['id'], 3, '0', STR_PAD_LEFT); ?></td>
                                                 <td><?php echo strftime("%d/%m/%Y", strtotime($data['fecha_inicio'])); ?></td>
-                                                <td class="amount-cell">100 Bs</td>
+                                                <td class="amount-cell"><?php echo (strtoupper($data['tipo']) == 'MENSUAL' ? '100' : '400'); ?> Bs</td>
+                                                <td>
+                                                    <?php if (strtoupper($data['tipo']) == 'MENSUAL'): ?>
+                                                        <span class="tipo-badge tipo-mensual">MENSUAL</span>
+                                                    <?php else: ?>
+                                                        <span class="tipo-badge tipo-anual">ANUAL</span>
+                                                    <?php endif; ?>
+                                                </td>
                                                 <td>
                                                     <?php if ($data['estado'] == 1): ?>
                                                         <span class="status-badge status-paid">
@@ -660,21 +837,21 @@
 
                         <!-- Próximo pago (si existe) -->
                         <?php if (mysqli_num_rows($query_proximo) > 0): ?>
-                            <div class="history-section" style="max-height: 150px;">
-                                <div class="history-header">
+                            <div class="next-payment-section">
+                                <div class="next-payment-header">
                                     <h5 class="history-title">
                                         <i class="fas fa-calendar-plus me-2"></i>
                                         Próximo Pago
                                     </h5>
                                 </div>
 
-                                <div style="padding: 15px;">
+                                <div class="next-payment-content">
                                     <?php while ($data = mysqli_fetch_array($query_proximo)): ?>
                                         <div class="d-flex justify-content-between align-items-center">
                                             <div>
                                                 <strong><?php echo strftime("%d de %B de %Y", strtotime($data['fecha_inicio'])); ?></strong>
                                                 <br>
-                                                <small class="text-muted">Monto: 100 Bs</small>
+                                                <small class="text-muted">Monto: <?php echo (strtoupper($data['tipo']) == 'MENSUAL' ? '100' : '400'); ?> Bs</small>
                                             </div>
                                             <span class="status-badge" style="background: rgba(255, 193, 7, 0.1); color: #856404;">
                                                 <i class="fas fa-clock"></i> Próximo
@@ -736,7 +913,7 @@
 
         // Animación al cargar
         document.addEventListener('DOMContentLoaded', function() {
-            const elements = document.querySelectorAll('.info-card, .calendar-section, .history-section');
+            const elements = document.querySelectorAll('.info-card, .calendar-section, .calendar-section-años, .history-section, .next-payment-section');
             elements.forEach((element, index) => {
                 element.style.opacity = '0';
                 element.style.transform = 'translateY(20px)';
