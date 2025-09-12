@@ -8,6 +8,32 @@
     // Configurar localización en español para mostrar fechas correctamente
     setlocale(LC_TIME, "es_ES.UTF-8", "Spanish_Spain.1252");
 
+    // Función para detectar automáticamente el tipo de pago
+    function detectarTipoPago($fecha, $tipo_actual) {
+        // Si ya tiene tipo definido y no está vacío, lo respetamos
+        if (!empty($tipo_actual) && trim($tipo_actual) != '') {
+            return strtoupper(trim($tipo_actual));
+        }
+        
+        // Si está vacío, detectamos automáticamente por la fecha
+        $fecha_obj = new DateTime($fecha);
+        $dia = (int)$fecha_obj->format('d');
+        $mes = (int)$fecha_obj->format('m');
+        
+        // Si es 10 de noviembre, es ANUAL
+        if ($dia == 10 && $mes == 11) {
+            return 'ANUAL';
+        }
+        
+        // Si es día 19 de cualquier mes, es MENSUAL
+        if ($dia == 19) {
+            return 'MENSUAL';
+        }
+        
+        // Por defecto MENSUAL (para cualquier otra fecha)
+        return 'MENSUAL';
+    }
+
     // Paginación AJAX
     $registros_por_pagina = 6;
     $pagina_actual = isset($_GET['pagina']) ? (int)$_GET['pagina'] : 1;
@@ -23,14 +49,19 @@
                 ? '<span class="status-badge status-paid"><i class="fas fa-check"></i> Pagado</span>'
                 : '<span class="status-badge status-pending"><i class="fas fa-clock"></i> Pendiente</span>';
             
-            $tipo_badge = strtoupper($data['tipo']) == 'MENSUAL' 
+            // Detectar tipo - después de actualizar la BD, esto será siempre correcto
+            $tipo_detectado = detectarTipoPago($data['fecha_inicio'], $data['tipo']);
+            
+            $tipo_badge = $tipo_detectado == 'MENSUAL' 
                 ? '<span class="tipo-badge tipo-mensual">MENSUAL</span>'
                 : '<span class="tipo-badge tipo-anual">ANUAL</span>';
+            
+            $monto = $tipo_detectado == 'MENSUAL' ? '100' : '400';
             
             $html .= '<tr>
                 <td>#' . str_pad($data['id'], 3, '0', STR_PAD_LEFT) . '</td>
                 <td>' . strftime("%d/%m/%Y", strtotime($data['fecha_inicio'])) . '</td>
-                <td class="amount-cell">' . (strtoupper($data['tipo']) == 'MENSUAL' ? '100' : '400') . ' Bs</td>
+                <td class="amount-cell">' . $monto . ' Bs</td>
                 <td>' . $tipo_badge . '</td>
                 <td>' . $estado_badge . '</td>
             </tr>';
@@ -78,7 +109,8 @@
         }
         
         $fecha_mes = $año_calc . "-" . str_pad($mes_calc, 2, "0", STR_PAD_LEFT) . "-01";
-        $query_mes = mysqli_query($conexion, "SELECT estado FROM suscripcion_sistema WHERE DATE_FORMAT(fecha_inicio, '%Y-%m') = '" . substr($fecha_mes, 0, 7) . "' AND tipo = 'MENSUAL'");
+        // Buscar pagos MENSUALES: día 19 O tipo 'MENSUAL' explícito
+        $query_mes = mysqli_query($conexion, "SELECT estado FROM suscripcion_sistema WHERE DATE_FORMAT(fecha_inicio, '%Y-%m') = '" . substr($fecha_mes, 0, 7) . "' AND (tipo = 'MENSUAL' OR (tipo = '' AND DAY(fecha_inicio) = 19))");
         
         if ($data_mes = mysqli_fetch_assoc($query_mes)) {
             $estado = $data_mes['estado'];
@@ -98,7 +130,8 @@
     $años_mostrar = [];
     for ($i = -3; $i <= 2; $i++) {
         $año_calc = $año_actual + $i;
-        $query_año = mysqli_query($conexion, "SELECT estado FROM suscripcion_sistema WHERE YEAR(fecha_inicio) = $año_calc AND tipo = 'ANUAL'");
+        // Buscar pagos ANUALES: 10 de noviembre O tipo 'ANUAL' explícito
+        $query_año = mysqli_query($conexion, "SELECT estado FROM suscripcion_sistema WHERE YEAR(fecha_inicio) = $año_calc AND (tipo = 'ANUAL' OR (MONTH(fecha_inicio) = 11 AND DAY(fecha_inicio) = 10))");
         
         if ($data_año = mysqli_fetch_assoc($query_año)) {
             $estado = $data_año['estado'];
@@ -785,12 +818,17 @@
                                     </thead>
                                     <tbody id="historialTableBody">
                                         <?php while ($data = mysqli_fetch_array($query_pagos)): ?>
+                                            <?php
+                                                // Detectar tipo automáticamente si está vacío
+                                                $tipo_detectado = detectarTipoPago($data['fecha_inicio'], $data['tipo']);
+                                                $monto = $tipo_detectado == 'MENSUAL' ? '100' : '400';
+                                            ?>
                                             <tr>
                                                 <td>#<?php echo str_pad($data['id'], 3, '0', STR_PAD_LEFT); ?></td>
                                                 <td><?php echo strftime("%d/%m/%Y", strtotime($data['fecha_inicio'])); ?></td>
-                                                <td class="amount-cell"><?php echo (strtoupper($data['tipo']) == 'MENSUAL' ? '100' : '400'); ?> Bs</td>
+                                                <td class="amount-cell"><?php echo $monto; ?> Bs</td>
                                                 <td>
-                                                    <?php if (strtoupper($data['tipo']) == 'MENSUAL'): ?>
+                                                    <?php if ($tipo_detectado == 'MENSUAL'): ?>
                                                         <span class="tipo-badge tipo-mensual">MENSUAL</span>
                                                     <?php else: ?>
                                                         <span class="tipo-badge tipo-anual">ANUAL</span>
