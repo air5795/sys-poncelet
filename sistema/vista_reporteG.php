@@ -199,8 +199,6 @@ function comprimirImagen($rutaOrigen, $calidad = 50, $maxWidth = 800) {
             }
         }
         
-        // Mensaje de finalización
-        echo '<p>No se encontraron imágenes en el directorio.</p>';
     }
     
 ?>
