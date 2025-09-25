@@ -156,7 +156,6 @@ function comprimirImagen($rutaOrigen, $calidad = 50, $maxWidth = 800) {
         
         // Mostrar información del procesamiento
         $totalArchivos = count($archivos);
-        echo '<p style="color: blue; font-weight: bold;">Procesando ' . $totalArchivos . ' imágenes...</p>';
         
         // Contador para controlar el procesamiento
         $contador = 0;
@@ -201,8 +200,6 @@ function comprimirImagen($rutaOrigen, $calidad = 50, $maxWidth = 800) {
         }
         
         // Mensaje de finalización
-        echo '<p style="color: blue; font-weight: bold;">✅ Procesamiento completado: ' . $contador . ' imágenes procesadas exitosamente.</p>';
-    } else {
         echo '<p>No se encontraron imágenes en el directorio.</p>';
     }
     
