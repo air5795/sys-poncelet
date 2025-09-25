@@ -4,8 +4,8 @@ session_start();
 include "../conexion.php";
 
 // Aumentar el tiempo límite de ejecución y memoria
-set_time_limit(300); // 5 minutos
-ini_set('memory_limit', '512M');
+set_time_limit(600); // 10 minutos
+ini_set('memory_limit', '1024M'); // 1GB de memoria
 
 // Función optimizada para comprimir imágenes
 function comprimirImagen($rutaOrigen, $calidad = 50, $maxWidth = 800) {
@@ -154,20 +154,17 @@ function comprimirImagen($rutaOrigen, $calidad = 50, $maxWidth = 800) {
         // Ordenar archivos naturalmente
         natsort($archivos);
         
+        // Mostrar información del procesamiento
+        $totalArchivos = count($archivos);
+        echo '<p style="color: blue; font-weight: bold;">Procesando ' . $totalArchivos . ' imágenes...</p>';
+        
         // Contador para controlar el procesamiento
         $contador = 0;
-        $maxImagenes = 50; // Límite de imágenes a procesar por página
         
         foreach($archivos as $rutaCompleta) {
-            // Verificar tiempo de ejecución restante
-            if (time() - $_SERVER['REQUEST_TIME'] > 240) { // 4 minutos máximo
+            // Verificar tiempo de ejecución restante (solo como medida de seguridad)
+            if (time() - $_SERVER['REQUEST_TIME'] > 540) { // 9 minutos máximo como medida de seguridad
                 echo '<p style="color: red;">Tiempo de procesamiento excedido. Se muestran las primeras ' . $contador . ' imágenes.</p>';
-                break;
-            }
-            
-            // Límite de imágenes por página
-            if ($contador >= $maxImagenes) {
-                echo '<p style="color: orange;">Se han procesado ' . $maxImagenes . ' imágenes. Para ver más, considere paginar los resultados.</p>';
                 break;
             }
             
@@ -192,11 +189,19 @@ function comprimirImagen($rutaOrigen, $calidad = 50, $maxWidth = 800) {
             
             $contador++;
             
+            // Mostrar progreso cada 10 imágenes
+            if ($contador % 10 == 0) {
+                echo '<p style="color: green; font-size: 12px;">Procesadas: ' . $contador . ' de ' . $totalArchivos . ' imágenes</p>';
+            }
+            
             // Liberar memoria periódicamente
             if ($contador % 10 == 0) {
                 gc_collect_cycles();
             }
         }
+        
+        // Mensaje de finalización
+        echo '<p style="color: blue; font-weight: bold;">✅ Procesamiento completado: ' . $contador . ' imágenes procesadas exitosamente.</p>';
     } else {
         echo '<p>No se encontraron imágenes en el directorio.</p>';
     }
